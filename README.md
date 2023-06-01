@@ -179,7 +179,12 @@ when the design setup is completed, we need run our design for synthesis by usin
  
    run_synthesis
 
-After the results, we need to check for total area occupied by the standard cells, macros, wires etc.
+After the results, we need to calculate the flop ratio.
+flop ratio = (no of flops)/(total no of cells).
+
+dfxtp2 = 1613
+no of cells = 14876
+so flop ratio = 10.842%
 ![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/2a5f59a8-ad3a-432b-80cd-8cf5cbbbbf3c)
 ![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/4119673d-ccdf-490a-8dd6-bcded97f35b7)
 
