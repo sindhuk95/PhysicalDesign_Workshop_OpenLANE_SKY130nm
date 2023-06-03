@@ -36,7 +36,7 @@ The Chip has various components.
 2. Pads : Signals travel through pads in and out of the chip.
 3. Core : Area in which Macros, standard cells sit and routing happens.
 
-![screenshot (25)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/6fedcc32-0988-4f61-821c-47e15b5fed06)
+![Screenshot (25)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/6fedcc32-0988-4f61-821c-47e15b5fed06)
 
 
 For example, There are few Blocks sitting inside the core and these are called foundary IPS because these blocks need some intelligence to be built and are manufactured using foundry. hence called Foundary IPs.
