@@ -141,25 +141,33 @@ When using opensource EDA tools, the problem becomes tougher. We need to worry a
 
 By releasing OpenLANE PDK, **efabless** decided On creating reference **open source ASIC implementation methodology and flow called **OpenLANE FLOW**. It comes with **APACHE 20. version license**. 
 
-**OpenLANE** has started for true **open-source Tape-out experiment.**
-At efabless, family of **open everything SOC's** is called **striVe.**
-The members of striVe SOC family 
-  - striVe
-  - striVe 2, striVe 2a
-  - striVe 3, striVe3a
-  - striVe 5
-  - striVe 6.
-Main goal of OpenLANE Asic flow is to have clean GDSII with out any human intervention(no-human-in-loop)
+**OpenLANE** has started for true **open-source Tape-out experiment**.
+
+At efabless, family of **open everything SOC's** is called **striVe**.
+
+The members of striVe SOC family
+- striVe
+- striVe 2, striVe 2a
+- striVe 3, striVe3a
+- striVe 5
+- striVe 6.
+
+Main goal of OpenLANE Asic flow is to have clean GDSII with out any human intervention(no-human-in-loop).
 Clean GDSII implies
-  - No DRC violations 
-  - No LVS violations
-  - Timing Violations (still work in progress)
+- No DRC violations
+- No LVS violations
+- Timing Violations (still work in progress)
+
 It is Tuned for SkyWater 130nm Open PDK.
+
 Can be used to Harden MAcros and Chips ( harden means generate the layout)
+
 Two Modes of operation:
-  - Autonomous - Push button flow
-  - Interactive - manually by flow
+- Autonomous - Push button flow
+- Interactive - manually by flow
+
 OpenLANE has Design SPace Exploration which finds the best set of flow configurations
+
 OpenLANE hhas 43 designs with their best configurations.
 
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/26160bdb-9d2b-47af-93c1-34f65b3c47a3)
@@ -218,7 +226,7 @@ Signoff in openLANE STA is done by openSTA
 
 # Getting Familiar to OpenSource EDA Tools
 
-### OpenLANE DIrectory Structure 
+### OpenLANE Directory Structure 
 
 - OpenLANE is a flow that comprises of OpenSource tools
 - This flow goal is to implement RTL2GDS without human in loop.
@@ -250,9 +258,11 @@ Next comes process related files i.e., is pdk file.
 
 Foundary files are made compatible only with commerical EDA tools. OpenPDKS has mitigated ths issue by implementing scripts and files that convert these foundary level PDKS to be compatible with OpenSource EDA Tools.
 
-In pdks directory .we have one of such variant file  ``sky130A``. In this we have libs folder, which has information specific to process technology and tools.
+In pdks directory .we have one of such variant file  ``sky130A``. 
 
 ![Capture6](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/31f77dd0-9705-4a98-9359-523d8bc6a627)
+
+In this we have libs folder, which has information specific to process technology and tools.
 
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/ff0267b3-8345-483f-bbb9-3b3ba12178ad)
 
@@ -285,6 +295,7 @@ Now, its time to use OpenLANE Flow. Since **OpenLANE is automatic, every stage r
 
 ``./flow.tcl -interactive ``
 
+
 ![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/f0c88fac-963c-41e8-a613-5a38adcfc4d3)
 
 
@@ -308,12 +319,15 @@ Now, ``run_synthesis``
 
 ![fifth pic](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/68f57d15-3689-4569-b08e-0c34c9dd6ef9)
 
-After synthesis, we need to calculate the flop ratio.
+After synthesis, we need to calculate the flop ratio, from the statistics report
+
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/b1781f83-ce0c-4a67-851f-0883b34a0dd2)
+
 flop ratio = (no of flops)/(total no of cells).
 
 dfxtp2 = 1613
-no of cells = 14876
-so flop ratio = 0.10842 or 10.842%
+no of cells = 18036
+so flop ratio = 0.08943 or 8.943%
 
 
 
