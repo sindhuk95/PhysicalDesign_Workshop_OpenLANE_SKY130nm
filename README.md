@@ -1,5 +1,6 @@
 # openLANE_sky130_PD_workshop_day1
-**DAY 1: Inception of open-source EDA, OpenLANE and SKY130PDK**
+
+## Inception of open-source EDA, OpenLANE and SKY130PDK**
 
 List of Topics being covered
 
@@ -11,24 +12,24 @@ Before getting started, let us talk about what is physical design.
 
    Physical design is the process of transforming a gate level netlist into a physical layout which is manufacturable. This process starts with partitioning of the design followed by floor/power planning, placement of standard cells, clock tree synthesis and routing. 
                    
-Partitioning : dividing the design into smaller parts called macros. In this similar functional blocks are  located closed to eachother inorder to minimize the connections between the macros.
+**Partitioning :** dividing the design into smaller parts called macros. In this similar functional blocks are  located closed to eachother inorder to minimize the connections between the macros.
 
-Floor planning : the most critical step in physical design flow. Quality of the chip depends on how good the floorplan is. In this stage we will get to know the shape and size of the die by the aspect ratio and utilization factor. Placement of Macros is done using Macro guide lines. After macros, halos/blockages, I/O pins and pre placed cells are placed.
+**Floor planning :** the most critical step in physical design flow. Quality of the chip depends on how good the floorplan is. In this stage we will get to know the shape and size of the die by the aspect ratio and utilization factor. Placement of Macros is done using Macro guide lines. After macros, halos/blockages, I/O pins and pre placed cells are placed.
 
-power planning : Inorder to supply power equally to each and every cell in our design, a power grid has been created where power is drawn from the supply to power rings then to stripes and finally through rails to the standard cells.
+**power planning :** Inorder to supply power equally to each and every cell in our design, a power grid has been created where power is drawn from the supply to power rings then to stripes and finally through rails to the standard cells.
 
-Placement : Here all the standard cells are placed inside the core. By coarse placement, standard cells which are in the modules gets placed roughly in the core and overlapped. In detailed placement, these cells sit in the site rows and blockages/ halos help in non-overlapping and congestion.
+**Placement :** Here all the standard cells are placed inside the core. By coarse placement, standard cells which are in the modules gets placed roughly in the core and overlapped. In detailed placement, these cells sit in the site rows and blockages/ halos help in non-overlapping and congestion.
 
-Clock Tree Synthesis: In a sequentinal design, Clock is the main component. Clock is ideal till placement. The main goal of CTS is to propagate the clock to each and every clock sinks with min skew and insertion delay by inserting clock buffers and inverters along the clock path. Clock Balancing is done by H tree methodology inorder to meet timing and power. 
+**Clock Tree Synthesis:** In a sequentinal design, Clock is the main component. Clock is ideal till placement. The main goal of CTS is to propagate the clock to each and every clock sinks with min skew and insertion delay by inserting clock buffers and inverters along the clock path. Clock Balancing is done by H tree methodology inorder to meet timing and power. 
 
-Routing : It is connecting the cells physically using metal straps. In this stage actual interconnect delays will be known. Before this stage, connections are logical i.e., trail route has been done. Once detailed routing is done, the design is checked for DRC,LVS. 
+**Routing :** It is connecting the cells physically using metal straps. In this stage actual interconnect delays will be known. Before this stage, connections are logical i.e., trail route has been done. Once detailed routing is done, the design is checked for DRC,LVS. 
 Once verification is done, The output of this PnR i.e., GDSII is giving to Fabrication team.
 
 Now, lets talk about the list of topics.
 
-HOW TO TALK TO COMPUTERS.
+### HOW TO TALK TO COMPUTERS.
 
- QFN-48  Package : Quad No Lead 48 package is an IC component best used for proagrammable module and microcomputers with 7 x 7mm body width and 48pins and these pins are driven by the board which is being seated. The Chip sits in the center of the Package. Package is like a case that surrounds the chip to protect it from corrosion or physical damage.
+ QFN-48  Package : Quad flat No Lead 48 package is an IC component best used for proagrammable module and microcomputers with 7 x 7mm body width and 48pins and these pins are driven by the board which is being seated. The Chip sits in the center of the Package. Package is like a case that surrounds the chip to protect it from corrosion or physical damage.
 
 The Chip has various components.
 
