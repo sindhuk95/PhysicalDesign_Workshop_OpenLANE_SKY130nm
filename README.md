@@ -12,18 +12,18 @@ Before getting started, let us talk about what is physical design.
 
    Physical design is the process of transforming a gate level netlist into a physical layout which is manufacturable. This process starts with partitioning of the design followed by floor/power planning, placement of standard cells, clock tree synthesis and routing. 
                    
-**Partitioning :** dividing the design into smaller parts called macros. In this similar functional blocks are  located closed to eachother inorder to minimize the connections between the macros.
+**Partitioning :** Dividing the design into smaller parts called macros. In this similar functional blocks are located closed to eachother inorder to minimize the connections between the macros.
 
-**Floor planning :** the most critical step in physical design flow. Quality of the chip depends on how good the floorplan is. In this stage we will get to know the shape and size of the die by the aspect ratio and utilization factor. Placement of Macros is done using Macro guide lines. After macros, halos/blockages, I/O pins and pre placed cells are placed.
+**Floor planning :** The most critical step in physical design flow. Quality of the chip depends on how good the floorplan is. In this stage we will get to know the shape and size of the die by the aspect ratio and utilization factor. Placement of Macros is done using Macro guide lines. After macros, halos/blockages, I/O pins and pre placed cells are placed.
 
 **power planning :** Inorder to supply power equally to each and every cell in our design, a power grid has been created where power is drawn from the supply to power rings then to stripes and finally through rails to the standard cells.
 
-**Placement :** Here all the standard cells are placed inside the core. By coarse placement, standard cells which are in the modules gets placed roughly in the core and overlapped. In detailed placement, these cells sit in the site rows and blockages/ halos help in non-overlapping and congestion.
+**Placement :** Here all the standard cells are placed inside the core. By coarse placement, standard cells which are in the modules gets placed roughly in the core and overlapped. In detailed placement, cells sit in the site rows in abutted manner and blockages/ halos help in non-overlapping and congestion.
 
 **Clock Tree Synthesis:** In a sequentinal design, Clock is the main component. Clock is ideal till placement. The main goal of CTS is to propagate the clock to each and every clock sinks with min skew and insertion delay by inserting clock buffers and inverters along the clock path. Clock Balancing is done by H tree methodology inorder to meet timing and power. 
 
 **Routing :** It is connecting the cells physically using metal straps. In this stage actual interconnect delays will be known. Before this stage, connections are logical i.e., trail route has been done. Once detailed routing is done, the design is checked for DRC,LVS. 
-Once verification is done, The output of this PnR i.e., GDSII is giving to Fabrication team.
+Once verification is done, The output of this PnR i.e., GDSII is given to Fabrication team.
 
 Now, lets talk about the list of topics.
 
@@ -33,75 +33,85 @@ Now, lets talk about the list of topics.
 
 The Chip has various components.
 
-1. Die : Size of the entire chip and area where I/O pads sit.
+1. Die  : Size of the entire chip and area where I/O pads sit.
 2. Pads : Signals travel through pads in and out of the chip.
 3. Core : Area in which Macros, standard cells sit and routing happens.
 
 ![Screenshot (25)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/6fedcc32-0988-4f61-821c-47e15b5fed06)
 
+### Foundary  IPS and Macros
+**FOUNDARY** is a factory where chip gets manufatcured. Every information related to to chip depends on this. It is a set of machines where engineers can communicate with factory. **IPS** is **intellectual property** because these blocks need some intelligence to be built and are manufactured using foundry. Hence together called Foundary IPs.
 
-For example, There are few Blocks sitting inside the core and these are called foundary IPS because these blocks need some intelligence to be built and are manufactured using foundry. hence called Foundary IPs.
-Macros are pure digitial logic blocks.
+**Macros** are reusable pieces of logic blocks (Intellectual Properties), that can be used in a design without the necessity of building them from scratch. These are like block box. 
 
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/14c98f72-737e-491f-85dd-d5974aaba198)
 
+###  RISC-V Instruction set Architecture (ISA)  
 
-RISC-V Instruction set Architecture (ISA) : Bascially, it is the language through which we communicate with the computers. lets say u have c program. If u want that c program to run on the computer or hardware with a layout. If we want to run this, we need to follow a particular flow. First the c program is first complied to assembly language program (RISC-V) and then to binary format. and this binary format is executed as layout. For this to be executed, we need a separate interface between the architecture and the layout called Hardware description language. We need to implement the architecture using RTL and PnR takes place and we get layout as output.
+Bascially, it is the language through which we communicate with the computers. If u want a c program to run on particular layout, we need to follow a particular flow to pass the information from c program to layout.
+ ```Compilation from software to Hardware : C Program - Assembly language(RISC-V) - Machine language format(binary Format) - Layout (executed as per requirement)```
+ For this to be executed, we need a separate interface between the architecture and the layout called Hardware description language. We need to implement the architecture using RTL and PnR converts RTL to Layout(GDS) and we get this layout as output.
 
 lets us take Apps as examples.
-how apps runs on the hardware? Between the apps and hardware, system software where the implementation takes place. The Major components in system software are OS,Complier,Assembler.
-OS :  handles IO operations, allocate memory. It also converts the App and convert into its corresponding assmebly language program and then to binary language.
-Complier : The o/p of system functions is then given to the complier which converts into set of instructions depending upon the hardware.
-Assembler : The instruction sets are then converted to binary language and fed to hardware.
+how apps runs on the hardware? Between the apps and hardware, system software is where the implementation takes place. The Major components in system software are **OS,Complier,Assembler.**
+**OS        :**  Handles IO operations, allocation of memory. It converts the App into its corresponding assmebly language program and then to binary language. The o/p of OS ais low level system functions i.,e C,C++,JAVA.
+**Complier  :** The system functions is then given to the complier which converts into set of instructions depending upon the hardware.
+**Assembler :** The instruction sets are then converted to binary language and fed to hardware.
 
-This set of instructions is INSTRUCTION SET ARCHITECTURE or ARCHITECTURE OF COMPUTER and acts as interface between compliers input and hardware. RTL is implemented using this instruction set and synthesize to gate level netlist and then to layout.
+This set of instructions is`` INSTRUCTION SET ARCHITECTURE or ARCHITECTURE OF COMPUTER `` and acts as interface between compliers input and hardware. RTL is implemented using this instruction set and synthesize to gate level netlist and then to layout.
 
 ![Screenshot (26)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/cf1c401d-a955-40a7-ba3c-e2ac25506698)
 
-SOC DESIGN USING OPENLANE
+# SOC DESIGN USING OPENLANE
 
-Digital ASIC Design in a automated way requires several elements. 
+### Components of Opensource Digital ASIC Design
+
+Digital ASIC Design in a automated way requires several elements. The elements are
+- RTL (Hardware descrption language) Models
+- EDA Tools
+- PDK Data
+
 ![Screenshot (28)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/b081c2e3-3b7e-496c-bad7-5fe9be196f75)
 
 we know about RTL and EDA tools. lets talk about PDK data.
 
-PDK data : process design kit. In order to model a fabrication process for the EDA tools we need collection of files. These are included in that kit. It is the interface between designers and fabrication team.
-PDK has Design rules, Device models, Digital Standard cell Libraries,I/O lib etc.
+** PDK data (Process Design Kit):** In order to model a fabrication process for the EDA tools we need collection of files. These are included in that kit. It is the interface between designers and fabrication team.
+PDK has Design rules, Device models, Digital Standard cell Libraries,I/O lib etc. 
+
+Google worked on an aggreement with skywater to opensoure PDK for the 130nm process by skywater. Google released the first ever opensoure pdk. The pdk has only data information for successful ASIC implementation by openroad or ocla tools
+
+
 ![Screenshot (27)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/52c25efe-5966-4e69-a4e3-176bb3263f28)
 
-Simplified RTL  ASIC design flow
+Few Opensources for these three components are 
+ 
+ ```
+ RTL Designs :
+ -librecores.org
+ opecores.org
+ github.com
+ 
+ EDA Tools :
+ Qflow
+ OpenROAD
+ OpenLANE
+ 
+ PDK DATA
+ Google +skywater 130nm
+ 
+ ```
+### Simplified RTL2GDS Flow
 
 ![Screenshot (29)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/707d282d-df46-4457-967b-9cf5dd58303a)
 
-Synthesis :  converting RTL into gate level netlist using standard cell libraries.
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/6494d8a2-8453-4918-aa19-b5d0e663b4cb)
-
-FP & PP :  Size and shape of the die, Macro placement, I/O pins are done in FP
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/4a9dd082-4116-4893-95b5-5aa1e3a64e9b)
-
+**Synthesis                     :**  converting RTL into gate level netlist using standard cell libraries.
+**FloorPlanning & PowerPlanning :**  Size and shape of the die, Macro placement, I/O pins are done in FP
 power Grid is build and through rings,stripes and rails power is evenly distributed. Upper metal layers are used for power routing because of  more width, indeed less resistance so less IR drop and Electron migration
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/33bc85e3-d192-4404-9cca-cefdff489945)
-
-Placement :  According to the netlist through coarse placement, cells are placed in their resepctive locations and cells might overlap.
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/92a24118-cb97-4adc-8fe4-0de2a649792a)
-
+**Placement                     :** According to the netlist through coarse placement, cells are placed in their resepctive locations and cells might overlap.
 so we do detailed placement to avoid the overlapping and flipped to save site row area.
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/0046206c-cb2d-4682-9a46-2a5c56a4e401)
-
-Clock Tree Synthesis : Building a clock tree such that clock reached every clock pin of a sequential block with min skew and insertion delay. 
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/45dc533f-899e-487d-95d4-c246fd1cb450)
-
-Routing : After clock, Signal routing takes place. For each metal layer PDK defines thickness, pitch,width, tracks etc.
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/c59aa90b-c111-4869-a61d-ce693d87209b)
-
-SKY130 has 6 layers. The lowest layer is used for interconnects and is made of titanium nitride and all 5 layers are aluminium.
+**Clock Tree Synthesis          :** Building a clock tree such that clock reached every clock pin of a sequential block with min skew and insertion delay. 
+**Routing                       :** After clock, Signal routing takes place. For each metal layer PDK defines thickness, pitch,width, tracks etc.
+**SKY130 has 6 layers. The lowest layer is used for interconnects and is made of titanium nitride and all 5 layers are aluminium.**
 Most routers are grid routers and metal tracks form a routing grid. since the grid is huge, we use divide and conquer approach. 
 Global Routing is performed using coarse grained grids generating routing guides. Fine grained grids uses these routing gudies and impplement the actual routing between wires.
 
