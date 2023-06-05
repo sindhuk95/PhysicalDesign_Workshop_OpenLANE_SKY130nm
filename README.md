@@ -43,11 +43,15 @@ The Chip has various components.
 
 **Macros** are reusable pieces of logic blocks (Intellectual Properties), that can be used in a design without the necessity of building them from scratch. These are like block box. 
 
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/47c315a7-20f0-47d3-b9ce-bf95fb704aa6)
+
+
 ###  RISC-V Instruction set Architecture (ISA)  
 
 Bascially, it is the language through which we communicate with the computers. If u want a c program to run on particular layout, we need to follow a particular flow to pass the information from c program to layout.
 
  ```Compilation from software to Hardware : C Program - Assembly language(RISC-V) - Machine language format(binary Format) - Layout (executed as per requirement)```
+ 
  For this to be executed, we need a separate interface between the architecture and the layout called Hardware description language. We need to implement the architecture using RTL and PnR converts RTL to Layout(GDS) and we get this layout as output.
 
 lets us take Apps as examples.
@@ -60,6 +64,9 @@ how apps runs on the hardware? Between the apps and hardware, system software is
 **Assembler :** The instruction sets are then converted to binary language and fed to hardware.
 
 This set of instructions is`` INSTRUCTION SET ARCHITECTURE or ARCHITECTURE OF COMPUTER `` and acts as interface between compliers input and hardware. RTL is implemented using this instruction set and synthesize to gate level netlist and then to layout.
+
+![Screenshot (37)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/2ff54d97-8521-4ba9-9057-f1ff940b6ad3)
+
 
 # SOC DESIGN USING OPENLANE
 
@@ -94,6 +101,9 @@ Few Opensources for these three components are
  Google +skywater 130nm
  
  ```
+ 
+ ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/bd4892f1-756d-4158-83c4-27e780395e2e)
+
 ### Simplified RTL2GDS Flow
 
 **Synthesis                     :**  converting RTL into gate level netlist using standard cell libraries.
@@ -152,6 +162,9 @@ Two Modes of operation:
 OpenLANE has Design SPace Exploration which finds the best set of flow configurations
 OpenLANE hhas 43 designs with their best configurations.
 
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/26160bdb-9d2b-47af-93c1-34f65b3c47a3)
+
+
 The flow starts with RTL synthesis and ends with final layout in the GDS format.
 OpenLANE is based on several OpenSOurce projects such as:
   - OpenROAD
@@ -208,7 +221,7 @@ Signoff in openLANE STA is done by openSTA
 ### OpenLANE DIrectory Structure 
 
 - OpenLANE is a flow that comprises of OpenSource tools
-- This flow goal is to implement RTL 2GDS without human in loop.
+- This flow goal is to implement RTL2GDS without human in loop.
 
 Before using linux, commands that we use regularly are
 
@@ -239,6 +252,11 @@ Foundary files are made compatible only with commerical EDA tools. OpenPDKS has 
 
 In pdks directory .we have one of such variant file  ``sky130A``. In this we have libs folder, which has information specific to process technology and tools.
 
+![Capture6](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/31f77dd0-9705-4a98-9359-523d8bc6a627)
+
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/ff0267b3-8345-483f-bbb9-3b3ba12178ad)
+
+
 ``sky130_fd_sc_hd`` variant is used for our design ``picorv32a``
 
 Its abbreviation is:
@@ -248,6 +266,9 @@ Its abbreviation is:
  - hd     : high density, variant of PDK
 
 In this folder, we have lib files that has Timing related information like Process corners, PVT corners and lef and tech lef has physical information of cells.
+
+![Capture9](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/729d2198-e976-4750-907f-4086fa9c63cb)
+
 
 ### DOCKER
 Before invoking the tool, lets know about **DOCKER**
@@ -264,6 +285,9 @@ Now, its time to use OpenLANE Flow. Since **OpenLANE is automatic, every stage r
 
 ``./flow.tcl -interactive ``
 
+![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/f0c88fac-963c-41e8-a613-5a38adcfc4d3)
+
+
 **package** typically contains related programs that can perform different functions. So, input all the packages that are required for the openlane.
 
 ``package require openlane 0.9``
@@ -271,13 +295,18 @@ Now, its time to use OpenLANE Flow. Since **OpenLANE is automatic, every stage r
 Before synthesis, we need to prepare the setup the data structure for our design ``picorv32a``.
 We have only three files in our design. Now, we create a file system to flow where each amd every step of flow will be fetching data from a particular created location (``runs``)
 
-``prep -design picorv32a``
+``prep -design picorv32a`` 
+
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/c48ae1ae-6c87-46c7-aa25-9faa25387aaa)
+
 
 A sub folder ``run`` has been created in picorv32a.
 
 As you can clearly see the lefs are being merged from sky130A lef files.
 
 Now, ``run_synthesis``
+
+![fifth pic](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/68f57d15-3689-4569-b08e-0c34c9dd6ef9)
 
 After synthesis, we need to calculate the flop ratio.
 flop ratio = (no of flops)/(total no of cells).
