@@ -37,14 +37,11 @@ The Chip has various components.
 2. Pads : Signals travel through pads in and out of the chip.
 3. Core : Area in which Macros, standard cells sit and routing happens.
 
-![Screenshot (25)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/6fedcc32-0988-4f61-821c-47e15b5fed06)
-
 ### Foundary  IPS and Macros
+
 **FOUNDARY** is a factory where chip gets manufatcured. Every information related to to chip depends on this. It is a set of machines where engineers can communicate with factory. **IPS** is **intellectual property** because these blocks need some intelligence to be built and are manufactured using foundry. Hence together called Foundary IPs.
 
 **Macros** are reusable pieces of logic blocks (Intellectual Properties), that can be used in a design without the necessity of building them from scratch. These are like block box. 
-
-![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/14c98f72-737e-491f-85dd-d5974aaba198)
 
 ###  RISC-V Instruction set Architecture (ISA)  
 
@@ -64,8 +61,6 @@ how apps runs on the hardware? Between the apps and hardware, system software is
 
 This set of instructions is`` INSTRUCTION SET ARCHITECTURE or ARCHITECTURE OF COMPUTER `` and acts as interface between compliers input and hardware. RTL is implemented using this instruction set and synthesize to gate level netlist and then to layout.
 
-![Screenshot (26)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/cf1c401d-a955-40a7-ba3c-e2ac25506698)
-
 # SOC DESIGN USING OPENLANE
 
 ### Components of Opensource Digital ASIC Design
@@ -75,17 +70,12 @@ Digital ASIC Design in a automated way requires several elements. The elements a
 - EDA Tools
 - PDK Data
 
-![Screenshot (28)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/b081c2e3-3b7e-496c-bad7-5fe9be196f75)
-
 we know about RTL and EDA tools. lets talk about PDK data.
 
 **PDK data (Process Design Kit) :** In order to model a fabrication process for the EDA tools we need collection of files. These are included in that kit. It is the interface between designers and fabrication team.
 PDK has Design rules, Device models, Digital Standard cell Libraries,I/O lib etc. 
 
 Google worked on an aggreement with skywater to opensoure PDK for the 130nm process by skywater. Google released the first ever opensoure pdk. The pdk has only data information for successful ASIC implementation by openroad or ocla tools
-
-
-![Screenshot (27)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/52c25efe-5966-4e69-a4e3-176bb3263f28)
 
 Few Opensources for these three components are 
  
@@ -105,8 +95,6 @@ Few Opensources for these three components are
  
  ```
 ### Simplified RTL2GDS Flow
-
-![Screenshot (29)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/707d282d-df46-4457-967b-9cf5dd58303a)
 
 **Synthesis                     :**  converting RTL into gate level netlist using standard cell libraries.
 
@@ -133,8 +121,6 @@ Once Routing is done, we do verifictaion during signoff
       Layout vs schematic (LVS) : verifies whether our layout matches with the netlist schematic.(MAGIC AND NETGEN)
 - **Timing Verification :**
       Static Timing Analysis : Checks whether our design meets all teh timing constraints and is running with the designated frequency.
-
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/baf3cdb1-79e8-4a9b-b229-2e05622a4b7c)
 
 ### INTRODUCTION TO OPENLANE and STRIVE Chipsets
 
@@ -166,8 +152,6 @@ Two Modes of operation:
 OpenLANE has Design SPace Exploration which finds the best set of flow configurations
 OpenLANE hhas 43 designs with their best configurations.
 
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/21752035-2a3e-43b9-89da-4395e33de3e1)
-
 The flow starts with RTL synthesis and ends with final layout in the GDS format.
 OpenLANE is based on several OpenSOurce projects such as:
   - OpenROAD
@@ -194,7 +178,7 @@ DFT (DESIGN FOR TEST) : Its an additional testing that is done for correctness o
 - Fault coverage
 - Fault simulation
 
-**Physical Implentation :* Implementation is done by OpenROAD APP. we use automated PnR 
+**Physical Implentation :** Implementation is done by OpenROAD APP. we use automated PnR 
 - Floor/power planning
 - End decoupling capcitors and Tap cells insertion
 - PLacement : global and detailed
@@ -222,6 +206,7 @@ Signoff in openLANE STA is done by openSTA
 # Getting Familiar to OpenSource EDA Tools
 
 ### OpenLANE DIrectory Structure 
+
 - OpenLANE is a flow that comprises of OpenSource tools
 - This flow goal is to implement RTL 2GDS without human in loop.
 
@@ -256,7 +241,7 @@ In pdks directory .we have one of such variant file  ``sky130A``. In this we hav
 
 ``sky130_fd_sc_hd`` variant is used for our design ``picorv32a``
 
-It abbreviation is:
+Its abbreviation is:
  - sky130 : the process name, 130nm
  - fd     : foundry name of skywater. For example,  OSU is for oklahoma state university
  - sc     : standard cell
@@ -264,36 +249,42 @@ It abbreviation is:
 
 In this folder, we have lib files that has Timing related information like Process corners, PVT corners and lef and tech lef has physical information of cells.
 
-Now, lets talk OpenLANE. 
+### DOCKER
+Before invoking the tool, lets know about **DOCKER**
 
+When a developer develops a machine,its works fine in his system. But when its given to serves or someone else computers even with same performance or optimization, it wont work properly like images are not loaded properly or path is a little bit different. So, the classic problem between developer and production team is `` it works on my machine Why not in yours? , you might not have included the dependencies ``and this debt goes on. For this compatible issues, DOCKER was implemeneted. Docker is compatible with any programming language or project. Our code is wrapped in airtight containers which are portable.
 
-
-In this LAB1 we had to synthesis a design picorv32a by using OpenLANE -interactive mode. If your using the lab session from https://www.vlsisystemdesign.com/ then you dont need to configure Docker but if your using in your PC you need to configure docker. So i used my PC for this practical session , i configured docker and then opened flow.tcl file in intercative mode . Its script which will invoke the Openlane.
-
-./flow.tcl -interactive
-
-after this we need to include package by using below command
-
-package require openlane 0.9
-
-after that  we need to prepare design files  by using below command
-
-
-   prep -design picorv32a
-
-when the design setup is completed, we need run our design for synthesis by using below command
+**Docker is a tool which is used to automate the deployement applications in a light weight containers so the application can work effeciently in different enviroments.
+ Container is a package that has all the dependencies required to run an application.**
  
-   run_synthesis
+ run `` docker`` 
+ Once you run this, bash shell opens and we continue our OpenLANE Flow in that
 
-After the results, we need to calculate the flop ratio.
+Now, its time to use OpenLANE Flow. Since **OpenLANE is automatic, every stage runs automatically.** To know manually what is happening in each and every stage, we use **OpenLANE in interactive mode** and the flow.tcl has all the information about openlane flow.  
+
+``./flow.tcl -interactive ``
+
+**package** typically contains related programs that can perform different functions. So, input all the packages that are required for the openlane.
+
+``package require openlane 0.9``
+
+Before synthesis, we need to prepare the setup the data structure for our design ``picorv32a``.
+We have only three files in our design. Now, we create a file system to flow where each amd every step of flow will be fetching data from a particular created location (``runs``)
+
+``prep -design picorv32a``
+
+A sub folder ``run`` has been created in picorv32a.
+
+As you can clearly see the lefs are being merged from sky130A lef files.
+
+Now, ``run_synthesis``
+
+After synthesis, we need to calculate the flop ratio.
 flop ratio = (no of flops)/(total no of cells).
 
 dfxtp2 = 1613
 no of cells = 14876
 so flop ratio = 0.10842 or 10.842%
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/2a5f59a8-ad3a-432b-80cd-8cf5cbbbbf3c)
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/4119673d-ccdf-490a-8dd6-bcded97f35b7)
-
 
 
 
