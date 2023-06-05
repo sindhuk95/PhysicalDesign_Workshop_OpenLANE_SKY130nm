@@ -49,13 +49,17 @@ The Chip has various components.
 ###  RISC-V Instruction set Architecture (ISA)  
 
 Bascially, it is the language through which we communicate with the computers. If u want a c program to run on particular layout, we need to follow a particular flow to pass the information from c program to layout.
+
  ```Compilation from software to Hardware : C Program - Assembly language(RISC-V) - Machine language format(binary Format) - Layout (executed as per requirement)```
  For this to be executed, we need a separate interface between the architecture and the layout called Hardware description language. We need to implement the architecture using RTL and PnR converts RTL to Layout(GDS) and we get this layout as output.
 
 lets us take Apps as examples.
 how apps runs on the hardware? Between the apps and hardware, system software is where the implementation takes place. The Major components in system software are **OS,Complier,Assembler.**
+
 **OS        :**  Handles IO operations, allocation of memory. It converts the App into its corresponding assmebly language program and then to binary language. The o/p of OS ais low level system functions i.,e C,C++,JAVA.
+
 **Complier  :** The system functions is then given to the complier which converts into set of instructions depending upon the hardware.
+
 **Assembler :** The instruction sets are then converted to binary language and fed to hardware.
 
 This set of instructions is`` INSTRUCTION SET ARCHITECTURE or ARCHITECTURE OF COMPUTER `` and acts as interface between compliers input and hardware. RTL is implemented using this instruction set and synthesize to gate level netlist and then to layout.
@@ -75,7 +79,7 @@ Digital ASIC Design in a automated way requires several elements. The elements a
 
 we know about RTL and EDA tools. lets talk about PDK data.
 
-** PDK data (Process Design Kit):** In order to model a fabrication process for the EDA tools we need collection of files. These are included in that kit. It is the interface between designers and fabrication team.
+**PDK data (Process Design Kit) :** In order to model a fabrication process for the EDA tools we need collection of files. These are included in that kit. It is the interface between designers and fabrication team.
 PDK has Design rules, Device models, Digital Standard cell Libraries,I/O lib etc. 
 
 Google worked on an aggreement with skywater to opensoure PDK for the 130nm process by skywater. Google released the first ever opensoure pdk. The pdk has only data information for successful ASIC implementation by openroad or ocla tools
@@ -87,7 +91,7 @@ Few Opensources for these three components are
  
  ```
  RTL Designs :
- -librecores.org
+ librecores.org
  opecores.org
  github.com
  
@@ -105,73 +109,164 @@ Few Opensources for these three components are
 ![Screenshot (29)](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/707d282d-df46-4457-967b-9cf5dd58303a)
 
 **Synthesis                     :**  converting RTL into gate level netlist using standard cell libraries.
+
 **FloorPlanning & PowerPlanning :**  Size and shape of the die, Macro placement, I/O pins are done in FP
 power Grid is build and through rings,stripes and rails power is evenly distributed. Upper metal layers are used for power routing because of  more width, indeed less resistance so less IR drop and Electron migration
+
 **Placement                     :** According to the netlist through coarse placement, cells are placed in their resepctive locations and cells might overlap.
 so we do detailed placement to avoid the overlapping and flipped to save site row area.
+
 **Clock Tree Synthesis          :** Building a clock tree such that clock reached every clock pin of a sequential block with min skew and insertion delay. 
+
 **Routing                       :** After clock, Signal routing takes place. For each metal layer PDK defines thickness, pitch,width, tracks etc.
 **SKY130 has 6 layers. The lowest layer is used for interconnects and is made of titanium nitride and all 5 layers are aluminium.**
-Most routers are grid routers and metal tracks form a routing grid. since the grid is huge, we use divide and conquer approach. 
-Global Routing is performed using coarse grained grids generating routing guides. Fine grained grids uses these routing gudies and impplement the actual routing between wires.
+Most routers are grid routers and metal tracks form a routing grid. since the grid is huge, we use divide and conquer approach.
+
+**Global Routing   :** performed using coarse grained grids generating routing guides. 
+
+**Detailed Routing :** Fine grained grids uses these routing gudies and impplement the actual routing between wires.
 
 Once Routing is done, we do verifictaion during signoff
 
-1. Physical verification :   
+- **Physical verification :**  
       Design rule checks (DRC) : verifies whether our design meets design rules. (performed by MAGIC)
       Layout vs schematic (LVS) : verifies whether our layout matches with the netlist schematic.(MAGIC AND NETGEN)
-2. Timing Verification : 
+- **Timing Verification :**
       Static Timing Analysis : Checks whether our design meets all teh timing constraints and is running with the designated frequency.
 
 ![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/baf3cdb1-79e8-4a9b-b229-2e05622a4b7c)
 
-INTRODUCTION TO OPENLANE 
+### INTRODUCTION TO OPENLANE and STRIVE Chipsets
 
-OpenLANE has a design flow starting from Design RTL to GDSII. The function needs PDK. It is based on several opensource projects such as openROAD, YOSYS, ABC, FAULT, MAGIC and may other.
+When using opensource EDA tools, the problem becomes tougher. We need to worry about 
+- Tools qualification 
+- Tools calibration 
+- Missing tools
 
-OpenLANE ASIC FLOW : The main goal of OpenLANE Asic flow is to have clean GDSII with out any human intervention i.e., no DRS and LVS violations. OpenLANe can be used to harden Macros and chips.
-Two modes of operation:
+By releasing OpenLANE PDK, **efabless** decided On creating reference **open source ASIC implementation methodology and flow called **OpenLANE FLOW**. It comes with **APACHE 20. version license**. 
 
-1. autonomus -  its like a push button flow, does everything automatically
-2. Interactive -  runs through commands 
+**OpenLANE** has started for true **open-source Tape-out experiment.**
+At efabless, family of **open everything SOC's** is called **striVe.**
+The members of striVe SOC family 
+  - striVe
+  - striVe 2, striVe 2a
+  - striVe 3, striVe3a
+  - striVe 5
+  - striVe 6.
+Main goal of OpenLANE Asic flow is to have clean GDSII with out any human intervention(no-human-in-loop)
+Clean GDSII implies
+  - No DRC violations 
+  - No LVS violations
+  - Timing Violations (still work in progress)
+It is Tuned for SkyWater 130nm Open PDK.
+Can be used to Harden MAcros and Chips ( harden means generate the layout)
+Two Modes of operation:
+  - Autonomous - Push button flow
+  - Interactive - manually by flow
+OpenLANE has Design SPace Exploration which finds the best set of flow configurations
+OpenLANE hhas 43 designs with their best configurations.
 
 ![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/21752035-2a3e-43b9-89da-4395e33de3e1)
 
-The flow starts with RTL synthesis. RTL is fed to YOSYS with the design constraints and translates into netlist then optimised and mapped into the synthesizable cells from SCL using ABC. ABC is used during optimization. When it comes to OpenLANE we have stratagies where some tragets least area and the other on best timing, this is called SYNTHESIS EXPLORATION.
+The flow starts with RTL synthesis and ends with final layout in the GDS format.
+OpenLANE is based on several OpenSOurce projects such as:
+  - OpenROAD
+  - Magic VLSI Layout Tool
+  - QFlow
+  - ABC
+  - Fault
+  - KLayout
+  - Yosys.
 
-DESIGN EXPLORATION :  When you have more no of configurations in our design, the Design exploration does sweeping job and gives an design matrix which has report on violations, cell count, runtime, utilization etc and from that we can get the best set of configurations and clean layout.
+Explaining how the flow works:
 
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/0efa00ea-fa0f-44f9-b0ec-1f14b0ff1bd6)
+**RTL** is fed to ***YOSYS*** with the design constraints and translates into netlist then ***optimised and mapped*** into the synthesizable cells from Standard cell libraby using ***ABC***. ABC is used during optimization. 
+**Synthesis exploration: When it comes to OpenLANE we have stratagies where some tragets least area and the other on best timing, this is called SYNTHESIS EXPLORATION.
 
+**DESIGN EXPLORATION :**  When you have more no of configurations in our design, the Design exploration does sweeping job and gives an design matrix which has report on violations, cell count, runtime, utilization etc and from that we can get the best set of configurations and clean layout.
 
-OpenLANE REGRESSION Testing : The design exploration utility is used for regression testing. OpenLANE already does this so that we can run the experssions on serveal configurations and compare them with the best one. It is something like Iteration.
-![Capture](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/e6b81838-b16a-4483-bf4b-0e6650049838)
-
+**OpenLANE REGRESSION Testing :** The design exploration utility is used for regression testing. OpenLANE already does this so that we can run the experssions on serveal configurations and compare them with the best one. It is something like Iteration.
 
 DFT (DESIGN FOR TEST) : Its an additional testing that is done for correctness of the design by generating test vectors or stimulus. 
+- Scan Insertion
+- Automatic Test Pattern Generation(ATPG)
+- Test Patterns Compaction
+- Fault coverage
+- Fault simulation
 
-Physical Implentation : we use automated PnR 
+**Physical Implentation :* Implementation is done by OpenROAD APP. we use automated PnR 
+- Floor/power planning
+- End decoupling capcitors and Tap cells insertion
+- PLacement : global and detailed
+- Post placement optimization
+- Clock Tree Synthesis
+- Routing : Global and Detailed
 
-1. Floor/power planning
-2. End decoupling capcitors and Tap cells insertion
-3. PLacement : global and detailed
-5. Post placement optimization
-6. Clock Tree Synthesis
-7. Routing : Global and Detailed
+**Logic Equivalence Check :** Since, we do optomization in Physical Implementation, the output netlist from this might be different from the synthesis netlist. Inorder to avoid any further violations functionally, we need to logically check the design before and after PnR. This is known as Logic Equivalence check
 
-LEC : Since, we do optomization in Physical Implementation, the output netlist from this might be different from the synthesis netlist. Inorder to avoid any further violations functionally, we need to logically check the design before and after PnR. This is known as Logic Equivalence check
-
-Antenna : When a metal wire segment is fabricated and its long enought, it act as antenna and collect charges which can damage the transistor  gate that is connected to that wire.
+**Antenna Rule Violation :** When a metal wire segment is fabricated and its long enough, it act as antenna and collect charges which can damage the transistor  gate that is connected to that wire.
 so length of the wire must be limited. Usually this job is done by router, if he fails, there are 2 solutions.
 
-1.  Bridging : In this we bridge using top layer so we go upto the top layer and drop back to to the metal layer that has long wire segment.
-2. Antenna diode : Insert the diode next to the transistor that is getting effected by this long wire.
+1. **Bridging :** In this we bridge using top layer so we go upto the top layer and drop back to to the metal layer that has long wire segment.
+2. **Antenna diode :** Insert the diode next to the transistor that is getting effected by this long wire.
 
 Using OpenLANE we took a preventive approach. we created a fake antenna diode and placed next to every cell during placement. when Magic runs for antenna checkers on the routed layout and reports a violation on a cell input pin, then replace the fake with the real one.
 
-Timing signoff involves interconnect rc extraction from the routed layout followed by STA performed by openSTA and reports timing.
+Signoff in openLANE STA is done by openSTA
 
-Open Source EDA tools : 
+- physical signoff includes DRC and LVS
+- Magic is used for DRC and spice extraction from layout
+- Magic and Netgen are used for LVS
+- extracted spice by magic vs verilog netlist
+
+# Getting Familiar to OpenSource EDA Tools
+
+### OpenLANE DIrectory Structure 
+- OpenLANE is a flow that comprises of OpenSource tools
+- This flow goal is to implement RTL 2GDS without human in loop.
+
+Before using linux, commands that we use regularly are
+
+```
+cd : change directory, cd .. : change one driectory back
+ls -ltr : lists everything in chronological order
+cp : copy
+clear - clears the screen not delete the content
+less : to view a file 
+vi : to view and write into the file (or) vim : to view or write into the file
+When you open the file to edit, First press esc then i for inserting into the file(edit) and once done with editing press esc again and give
+:wq : save write and exit.
+If I want to search anything in  vi or vim editor, use 
+/ - searches  the word in the file EX: /sky130_vsdinv - this searches sky130_vsdinv in the entire file. If you have more than one, press n in the vi or vim editor to know the other locations of the search word.
+very very important one is ( I felt it important)
+find . -name filename - finds the cell in that directory or sub directories. This is just once, may more are available.
+If you want to know the usage of the command, just type command --helo
+Ex : rm --help
+```
+
+The directory which we will be using for entire implementation and invoking of the tool
+
+`` /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane ``
+
+Next comes process related files i.e., is pdk file.
+
+Foundary files are made compatible only with commerical EDA tools. OpenPDKS has mitigated ths issue by implementing scripts and files that convert these foundary level PDKS to be compatible with OpenSource EDA Tools.
+
+In pdks directory .we have one of such variant file  ``sky130A``. In this we have libs folder, which has information specific to process technology and tools.
+
+``sky130_fd_sc_hd`` variant is used for our design ``picorv32a``
+
+It abbreviation is:
+ - sky130 : the process name, 130nm
+ - fd     : foundry name of skywater. For example,  OSU is for oklahoma state university
+ - sc     : standard cell
+ - hd     : high density, variant of PDK
+
+In this folder, we have lib files that has Timing related information like Process corners, PVT corners and lef and tech lef has physical information of cells.
+
+Now, lets talk OpenLANE. 
+
+
 
 In this LAB1 we had to synthesis a design picorv32a by using OpenLANE -interactive mode. If your using the lab session from https://www.vlsisystemdesign.com/ then you dont need to configure Docker but if your using in your PC you need to configure docker. So i used my PC for this practical session , i configured docker and then opened flow.tcl file in intercative mode . Its script which will invoke the Openlane.
 
