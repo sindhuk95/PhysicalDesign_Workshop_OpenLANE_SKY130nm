@@ -1270,7 +1270,7 @@ Invoke the engine using the command in SPEF_EXTRACTOR directory
 One thing is observed is TritonRoute automatically generates spef file once it finishes its run. If we create a spef manually, this will replace the auto generated spef file.
 My DRC is clean and my RTLtoGDS was successful without any timing and drcs violations.
 
-Final GDSII layout 
+## Final GDSII layout 
 
 ![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/6feefd73-f6fa-4911-9ab4-4df4e5d75fb7).
 
