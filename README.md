@@ -174,7 +174,7 @@ Few Opensources for these three components are
  
  ```
  
- [image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/bd4892f1-756d-4158-83c4-27e780395e2e)
+ ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/bd4892f1-756d-4158-83c4-27e780395e2e)
 
 ## Simplified RTL2GDS Flow
 
