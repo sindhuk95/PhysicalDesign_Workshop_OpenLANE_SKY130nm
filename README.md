@@ -11,9 +11,9 @@
    - INTRODUCTION TO OPENLANE and STRIVE Chipsets
 - Getting Familiar to OpenSource EDA Tools
    - OpenLANE Directory Structure
-   - DOCKER, Package and interactive Mode
+   - DOCKER, Package and Interactive Mode
    - Design preparation step
-   - Synthesis run and flop ratio
+   - Synthesis run and Flop ratio
  
 ### DAY 2 Floorplan and INtrocution to Library Cells
 - Floorplanning considerations
@@ -65,7 +65,8 @@
 - ROUTING
 - Features of Tritonroute
 - SPEF extraction
-## Inception of open-source EDA, OpenLANE and SKY130PDK
+
+# DAY 1 Inception of open-source EDA, OpenLANE and SKY130PDK
 
 List of Topics being covered
 
@@ -94,7 +95,7 @@ Now, lets talk about the list of topics.
 
 # HOW TO TALK TO COMPUTERS.
 
-### QFN-48 PAckage, Foundary IPS and Macros
+## QFN-48 PAckage, Foundary IPS and Macros
 
  QFN-48  Package : Quad flat No Lead 48 package is an IC component best used for proagrammable module and microcomputers with 7 x 7mm body width and 48pins and these pins are driven by the board which is being seated. The Chip sits in the center of the Package. Package is like a case that surrounds the chip to protect it from corrosion or physical damage.
 
@@ -104,8 +105,6 @@ The Chip has various components.
 2. Pads : Signals travel through pads in and out of the chip.
 3. Core : Area in which Macros, standard cells sit and routing happens.
 
-
-
 **FOUNDARY** is a factory where chip gets manufatcured. Every information related to to chip depends on this. It is a set of machines where engineers can communicate with factory. **IPS** is **intellectual property** because these blocks need some intelligence to be built and are manufactured using foundry. Hence together called Foundary IPs.
 
 **Macros** are reusable pieces of logic blocks (Intellectual Properties), that can be used in a design without the necessity of building them from scratch. These are like block box. 
@@ -113,7 +112,7 @@ The Chip has various components.
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/47c315a7-20f0-47d3-b9ce-bf95fb704aa6)
 
 
-###  RISC-V Instruction set Architecture (ISA)  
+##  RISC-V Instruction set Architecture (ISA)  
 
 Bascially, it is the language through which we communicate with the computers. If u want a c program to run on particular layout, we need to follow a particular flow to pass the information from c program to layout.
 
@@ -137,7 +136,7 @@ This set of instructions is`` INSTRUCTION SET ARCHITECTURE or ARCHITECTURE OF CO
 
 # SOC DESIGN USING OPENLANE
 
-### Components of Opensource Digital ASIC Design
+## Components of Opensource Digital ASIC Design
 
 Digital ASIC Design in a automated way requires several elements. The elements are
 - RTL (Hardware descrption language) Models
@@ -169,9 +168,9 @@ Few Opensources for these three components are
  
  ```
  
- ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/bd4892f1-756d-4158-83c4-27e780395e2e)
+ [image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/bd4892f1-756d-4158-83c4-27e780395e2e)
 
-### Simplified RTL2GDS Flow
+## Simplified RTL2GDS Flow
 
 **Synthesis                     :**  converting RTL into gate level netlist using standard cell libraries.
 
@@ -199,7 +198,7 @@ Once Routing is done, we do verifictaion during signoff
 - **Timing Verification :**
       Static Timing Analysis : Checks whether our design meets all teh timing constraints and is running with the designated frequency.
 
-### INTRODUCTION TO OPENLANE and STRIVE Chipsets
+## INTRODUCTION TO OPENLANE and STRIVE Chipsets
 
 When using opensource EDA tools, the problem becomes tougher. We need to worry about 
 - Tools qualification 
@@ -293,7 +292,7 @@ Signoff in openLANE STA is done by openSTA
 
 # Getting Familiar to OpenSource EDA Tools
 
-### OpenLANE Directory Structure 
+## OpenLANE Directory Structure 
 
 - OpenLANE is a flow that comprises of OpenSource tools
 - This flow goal is to implement RTL2GDS without human in loop.
@@ -309,6 +308,7 @@ less : to view a file
 vi : to view and write into the file (or) vim : to view or write into the file
 When you open the file to edit, First press esc then i for inserting into the file(edit) and once done with editing press esc again and give
 :wq : save write and exit.
+:q : just quit
 If I want to search anything in  vi or vim editor, use 
 / - searches  the word in the file EX: /sky130_vsdinv - this searches sky130_vsdinv in the entire file. If you have more than one, press n in the vi or vim editor to know the other locations of the search word.
 very very important one is ( I felt it important)
@@ -347,7 +347,8 @@ In this folder, we have lib files that has Timing related information like Proce
 ![Capture9](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/729d2198-e976-4750-907f-4086fa9c63cb)
 
 
-### DOCKER
+## DOCKER, Package and Interactive Mode 
+
 Before invoking the tool, lets know about **DOCKER**
 
 When a developer develops a machine,its works fine in his system. But when its given to serves or someone else computers even with same performance or optimization, it wont work properly like images are not loaded properly or path is a little bit different. So, the classic problem between developer and production team is `` it works on my machine Why not in yours? , you might not have included the dependencies ``and this debt goes on. For this compatible issues, DOCKER was implemeneted. Docker is compatible with any programming language or project. Our code is wrapped in airtight containers which are portable.
@@ -373,6 +374,8 @@ Now, its time to use OpenLANE Flow. Since **OpenLANE is automatic, every stage r
 Before synthesis, we need to prepare the setup the data structure for our design ``picorv32a``.
 We have only three files in our design. Now, we create a file system to flow where each amd every step of flow will be fetching data from a particular created location (``runs``)
 
+## Design Preparation step
+
 ``prep -design picorv32a`` 
 
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/c48ae1ae-6c87-46c7-aa25-9faa25387aaa)
@@ -381,6 +384,10 @@ We have only three files in our design. Now, we create a file system to flow whe
 A sub folder ``run`` has been created in picorv32a.
 
 As you can clearly see the lefs are being merged from sky130A lef files.
+
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/4269ab29-6467-43e5-9199-db62416646df)
+
+## Syntnesis run and Flop ratio
 
 Now, ``run_synthesis``
 
@@ -396,15 +403,13 @@ dfxtp2 = 1613
 no of cells = 18036
 so flop ratio = 0.08943 or 8.943%
 
-# DAY 2
+# DAY 2 Floorplan and Introcution to Library Cells
 
-# FLOORPLANNING, LIBRARY CELLS and PLACEMENT
+## Floorplanning considerations
 
-   This is the repoistory of Workshop Day2. In this we cover Floorplanning key parameters, running floorplan and placement using openlane and review layout in magic.
+   Few considerations are made before running floorplan. Key parameters are Aspect ratio, Utilization factors, Macro placement using  ```Macro Guide lines```, I/O pin  and Pre-placed cell placement and generating power grid. But In this OpenLANE flow, Power Grid generation comes after post-cts.So, lets take about power grid feneration after post-cts.
 
-### Floorplanning considerations
-
-### Utilization Factor & Aspect Ratio  
+## Utilization Factor & Aspect Ratio  
 
 When it comes to floorplanning, the shape and size of the fllorplan is decided by Aspect Ratio and how good the floor plan is decided by Utilisation Factor. They are defined as follows:
 
@@ -414,25 +419,25 @@ When it comes to floorplanning, the shape and size of the fllorplan is decided b
 
 A Utilisation Factor of 1 signifies 100% utilisation leaving no place for routing and extra logic. However, In real scenario, the Utilisation Factor will usually be  0.5-0.6 ie., 50 to 60% of the area is used for macros, standard cells and rest is used for routing, extralogic. Likewise, an Aspect ratio of 1 signifies that the chip is square shaped. Any value other than 1 signifies rectanglular chip.
 
-### Pre-placed cells 
+## Pre-placed cells 
 
 Once the Utilisation Factor and Aspect Ratio has been decided, the locations of pre-placed cells need to be defined. lets say we have  a combinational logic which does some function, maybe clock buffers, complex cells like clock gating cell, mux, memory. so these cells are implemented separately. Pre-placed cells are IPs and have user defined locations hence are fixed in those locarions. Since they are placed before automated placement and routing, they are called pre-placed cells.
 
-### Decoupling capacitors
+## Decoupling capacitors
 
 Once we place Pre-placed cells, these must be surrounded with decoupling capacitors (decaps). lets say we have logic cell that needs transition. The capcitor demands a huge current and this is provided by the power supply through physical wires. As we know, Physical wires have resistance, capaictance and inductance in it. when the signal/supply voltage travserse through these long wires, they will be voltage drop and the intende supply cannot reach the logic cell that is transitioning.The voltage can lead to undefined region in noise margin. To avoid this, Decaps are invented. These are placed very close to the critical cells.  Decaps are fully charged and have equivalent voltage as of the power supply. Since Decap is close to the logic, its hard for the voltage to drop and the lies with in the Noise Margin range. Their role is to decouple the circuit from power supply by supplying the necessary amount of current to the circuit. They pervent crosstalk.
 
-### Power Planning
+## Power Planning
 
 As we know, there are millions of cells in our design and its hard to supplu power equally to all over the design. However we cannot place decaps cells everywhere in the design.  So, separate horizontal and vertical Vdd and Vss wires have been created forming like a mesh. Now, each cell can tap the required supply from the nearest wire. They way the power is supplied to all the standara cells is through rings,stripes and followpins.
 
-### Pin Placement
+## Pin Placement
 
 The netlist is the logical connectivity between cells. The area between the core and die is utilised for placing I/O pins. The connectivity information is defined in either VHDL or Verilog and is used to determine the position of I/O pins of various ports. Then, logical cell placement is bloackage is done inorder to avoid any cells getting placed by automated PnR.
 
-### Floorplan run on OpenLANE & review layout in Magic
+## Floorplan run on OpenLANE & review layout in Magic
 
-#### Floorplan envrionment variables or switches:
+### Floorplan envrionment variables or switches:
 1. ```FP_CORE_UTIL``` - core utilization percentage
 2. ```FP_ASPECT_RATIO``` - the cores aspect ratio
 3. ```FP_CORE_MARGIN``` - The length of the margin surrounding the core area
@@ -442,7 +447,7 @@ The netlist is the logical connectivity between cells. The area between the core
  
 ***Note: Usually, the parameter values for vertical metal layer and horizontal metal layer will be 1 more than that specified in the files***
 
-#### Importance files in increasing priority order:
+### Importance files in increasing priority order:
 1. ```floorplan.tcl``` - System default settings
 2. ```conifg.tcl```
 3. ```sky130A_sky130_fd_sc_hd_config.tcl```
@@ -454,7 +459,7 @@ The netlist is the logical connectivity between cells. The area between the core
  
  ```
  
- ![Capture10](https://github.com/sindhuk95/later/assets/135046169/cb20dfe1-29f5-40dd-a5c9-af690a1b9a04)
+![Capture10](https://github.com/sindhuk95/later/assets/135046169/cb20dfe1-29f5-40dd-a5c9-af690a1b9a04)
  
 Post the floorplan run, a .def file will have been created within the ```results/floorplan``` directory. We may review floorplan files by checking the ```floorplan.tcl.``` The system defaults will have been overriden by switches set in conifg.tcl and further overriden by switches set in ```sky130A_sky130_fd_sc_hd_config.tcl.```
 
@@ -482,13 +487,13 @@ You can clearly see I/O pins, Decap cells and Tap cells. Tap cells are placed in
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/3a55d83e-1776-4b96-a55c-f1cf00d823bb)
 
 
-### Library Binding and Placement
+## Library Binding and Placement
 
-### Netlist Binding and initial place design
+## Netlist Binding and initial place design
 
 First we need to bind the netlist with physical cells. We have shapes for OR, AND and every cell for pratice purpose. But in reality we dont have such shapes, we have give an physical dimensions like rectangles or squares weight and width. This information is given in libs and lefs. Now we place these cells in our design by initilaising it. 
 
-### Optimize Placement
+## Optimize Placement
 
 The next step is placement. Once we initial the design, the logic cells in netlist in its physical dimisoins is placed on the floorplan. Placement is perfomed in 2 stages:
 
@@ -498,7 +503,7 @@ Legalisation of cells is important from timing point of view.
 
 Optimization is stage where we estimate the lenght and capictance, based on that we add buffers. Ideally, Optimization is done for better timing.
 
-### Congestion aware Placement using Replace 
+## Congestion aware Placement 
 
 Post placement, the design can be viewed on magic within results/placement directory:
 
@@ -510,13 +515,13 @@ magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs
 ![Capture1](https://github.com/sindhuk95/SKY130_PD_WS_DAY2/assets/135046169/63fb5104-9b15-4976-ac85-b5cb84d0273b)
 
 
-*Note: Power distribution network generation is usually a part of the floorplan step. However, in the openLANE flow, floorplan does not generate PDN.  It is created after post CTS. The steps are - floorplan, placement, CTS, Post CTS and then PDN**
+**Note: Power distribution network generation is usually a part of the floorplan step. However, in the openLANE flow, floorplan does not generate PDN.  It is created after post CTS. The steps are - floorplan, placement, CTS, Post CTS and then PDN**
 
-### 3. Need for libraries and characterization
+## Need for libraries and characterization
 
 As we know, From logic synthesis to routing and STA, each and evry stage has one thing in common i.e., logic gates/ logic cells. In order for the tool understand these gates are and their timing, we need to characterize these cells. 
 
-### CELL DESIGN AND CHARACETRIZATION FLOWS
+## CELL DESIGN AND CHARACETRIZATION FLOWS
 
 Library is a place where we get information about every cell. It has differents cells with different size, functionality,threshold voltages. There is a typical cell design flow steps.
 1. Inputs : PDKS(process design kit) : DRC & LVS, SPICE Models, library & user-defined specs.
@@ -539,11 +544,11 @@ A typical standard cell characterization flow that is followed in the industry i
 Now all these 8 steps are fed in together as a configuration file to a characterization software called GUNA. This software generates timing, noise, power models.
 These .libs are classified as Timing characterization, power characterization and noise characterization.
 
- ![image](https://github.com/sindhuk95/later/assets/135046169/87348350-fa25-4ef8-99f4-1cdddf070f10)
+![image](https://github.com/sindhuk95/later/assets/135046169/87348350-fa25-4ef8-99f4-1cdddf070f10)
 
-### 4. TIMING CHARACTERIZATION
+## TIMING CHARACTERIZATION
 
-### Timing threshold definitions 
+## Timing threshold definitions 
 Timing defintion |	Value
 -------------- | --------------
 slew_low_rise_thr	| 20% value
@@ -555,7 +560,7 @@ in_fall_thr |	50% value
 out_rise_thr |	50% value
 out_fall_thr | 50% value
 
-### Propagation Delay and Transition Time 
+## Propagation Delay and Transition Time 
 
 Propagation Delay :  the time difference between when the transitional input reaches 50% of its final value and when the output reaches 50% of its final value. Poor choice of threshold values lead to negative delay values. Even thought you have taken good threshold values, sometimes depending upon how good or bad the slew, the dealy might be still +ve or -ve.
 
@@ -563,7 +568,7 @@ Propagation Delay :  the time difference between when the transitional input rea
 Propagation delay = time(out_thr) - time(in_thr)
 ```
 
-### Transition time or Slew 
+## Transition time or Slew 
 
 The time it takes the signal to move between states is the transition time , where the time is measured between 10% and 90% or 20% to 80% of the signal levels.
 
