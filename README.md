@@ -387,11 +387,14 @@ We have only three files in our design. Now, we create a file system to flow whe
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/c48ae1ae-6c87-46c7-aa25-9faa25387aaa)
 
 
-A sub folder ``run`` has been created in picorv32a.
+A sub folder ``run`` has been created in picorv32a with the date on which you did the prepataion of design
+
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/0f81080f-5845-459d-9e9d-2c71625504d4)
 
 As you can clearly see the lefs are being merged from sky130A lef files.
 
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/4269ab29-6467-43e5-9199-db62416646df)
+
 
 ## Syntnesis run and Flop ratio
 
@@ -413,7 +416,7 @@ so flop ratio = 0.08943 or 8.943%
 
 # Floorplanning considerations
 
-   Few considerations are made before running floorplan. Key parameters are Aspect ratio, Utilization factors, Macro placement using  ```Macro Guide lines```, I/O pin  and Pre-placed cell placement and generating power grid. But In this OpenLANE flow, Power Grid generation comes after post-cts.So, lets take about power grid feneration after post-cts.
+Few considerations are made before running floorplan. Key parameters are Aspect ratio, Utilization factors, Macro placement using  ```Macro Guide lines```, I/O pin  and Pre-placed cell placement and generating power grid. But In this OpenLANE flow, Power Grid generation comes after post-cts.So, lets take about power grid feneration after post-cts.
 
 ## Utilization Factor & Aspect Ratio  
 
@@ -585,6 +588,637 @@ Rise transition time = time(slew_high_rise_thr) - time (slew_low_rise_thr)
 
 Low transition time = time(slew_high_fall_thr) - time (slew_low_fall_thr)
 ```
+
+# DAY3 Design Library Cell using ngspice simulations
+
+# CMOS inverter ngspice simulations
+``ngspice``  is opesoure engine where simulations are done.
+
+### IO Placer revision
+
+ - PnR is a iterative flow and hence, we can make changes to the environment variables in the fly to observe the changes in our design. 
+ - Let us say If I want to change my pin configuration along the core from equvi distance randomly placed to someother placement, we just set that IO mode variable on command prompt as shown below
+ ```
+ set ::env(FP_IO_MODE) 2
+```
+
+## SPICE Deck Creation and Simulation for CMOS inverter
+
+- Before performing a SPICE simulation we need to create SPICE Deck
+SPICE Deck provides information about the following:
+- Component connectivity - Connectivity of the Vdd, Vss,Vin, substrate. Substrate tunes the threshold voltage of the MOS.
+- component values - values of PMOS and NMOS, Output load, Input Gate Voltage, supply voltage.
+- Node Identification and naming - Nodes are required to define the SPICE Netlist
+     For example ```M1 out in vdd vdd pmos w = 0.375u L = 0.25u``` , ```cload out 0 10f```
+- Simulation commands
+- Model file - information of parameters related to transistors
+Simulation of CMOS using different width and lengths. From the waveform, irrespective of switching the shape of it are almost same.
+
+- ![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/5b494ae5-341a-41ff-a2bb-1db066fa2b72)
+- 
+From the waveform we can see the characteristics are maintained  across all sizes of CMOS. So CMOS as a circuit is a robust device hence use in designing of logic gates. Parameters that define the robustness of the CMOS are
+
+## Switching Threshold Vm
+
+- The Switching Threshold of a CMOS inverter is the point where the Vin = Vout on the DC Transfer characreristics. 
+- At this point, both the transistors are in saturation region, means both are turned on and have high chances of current flowing driectly from VDD to Ground called Leakage current.
+ 
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/3393442e-1b4b-434a-bc7e-6e2ed4fde218)
+
+Through transient analysis, we calculate the rise and fall delays of the CMOS by SPICE Simulation. As we know delays are calculated at 50% of the final values.
+
+
+## Lab steps to git clone vsdstdcelldesign
+
+- First, clone the required mag files and spicemodels of inverter,pmos and nmos sky130. The command to clone files from github link is:
+```
+git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+```
+once I run this command, it will create ``vsdstdcelldesign`` folder in openlane directory. I have got an error saying `` could not  resolve host: github.com`` 
+somehow I figured it was due incorrect proxy, so I used this command  `` git config --global --unset https:proxy``. It worked and could clone the files from github to my openlane.
+
+![day3-1](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/5fcb599b-48bf-4667-995c-2ff99e7b6358)
+
+The information of inverter layout is mentioned in ``sky130_inv.mag`` file.
+
+![day3-7](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/d42a28e9-34a0-46c7-8799-03c668709207)
+
+Inorder to open the mag file and run magic, we need tech file for magic in that location. So, lets copy the tech file from magic which is in pdks directory to vsdstdcelldesign folder
+command to copy the file is
+``` cp sky130A.tech /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign/ ```
+once we run this command, the tech file will be copied to vsdstdcelldesign folder.
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/172d04b0-5701-4bdd-b020-e32775932bf4)
+
+For layout we run magic command
+``` magic -T sky130A.tech sky130_inv.mag & ```
+Ampersand at the end makes the next prompt line free, otherwise magic keeps the prompt line busy. Once we run the magic command we get the layout of the inverter in the magic window
+
+![day3-3](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/47174505-3cbc-4110-b342-317eef4d849d)
+
+Press G in the magic console and you can see the grids being disaplyed
+
+![size of row](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/ec4a0ff1-9009-4365-b66c-9e352ba1842a)
+
+# Inception of Layout and CMOS Fabrication Process
+
+## Mask CMOS Fabrication
+
+The 16-mask CMOS process consists of the following steps:
+- **Selecting the subtrate**
+- **Creating actove region for Transistors** -  Isolation between active region pockets by depositing the oxide layer SiO2, silicon nitride Si3N4,then photoresist and masking the layers followed by photolithography and etch of the silicon nitride and remove photoresist. then this is placed in oxidation furnace, helps in growing oxide layer in other regions. This process is called LOCOS "Local oxidation of silicon" and lastly we strip out Si3N4 using hot phosphoric acid.
+- **N-well and P-well formation**: Both wells are created separately. First Pwell is created in steps like Photoresist, mask, photolithpgraphy and a p-type Boron material is diffused into psubstrate using Ion Implantation, forming P-well and same goes for n-well formation by diffusing a n-type Phosphorous material. Till now wells are created, by using High Temperature furnace process, drive-in dussion happens and  creating depths of wells and this process of creating is called tub process.
+- **Formation of gate** - Gate is the most important terminal of CMOS transistor, where you control the threshold voltages and these voltages turns off/on the transistor.polysilicon layer is depositied and photolithography techniques are perfomed created NMOS and PMOS gates. The two parameters for gate formation are
+   - Oxide capacitance
+   - doping concentration    
+- **lightly doped drain(LDD) formation** - To prevent hot electron effect and short channel effect
+- **Source & drain formation**: In this, a thin layer of oxide is added to avoid the effect of channel during implants. It is where the vector velocity of ions matches with that of the crystalline structure of the p substrate and go directly into the substrate without hitting any silicon atom, when we do alot of ion implanatation. N+,P+ implants are done by Aresenic implantation and Hight temperature annealing.
+- **Local interconnect formation**: Remove the thin screen oxide by etching in (hydrofloric) HF solution. There are various step to form local interconnects. One is
+- **deposit titanium on wafer using supttering** - Once it is depoisted and heating is done in N2 ambient, chemical reaction happens creating two kind of metal contacts, titanium silicon dioxide which are low resistant,used for interconnect contacts and titanium nitride(etched using RCA cleaning) used for the connection you want bring to the top,local communication
+- **Higher level metal formation**: Non Planar surface topography is not suitable for metal interconnects. Planarize the surface by doping silicon oxide with Boron or Phosphorous to polish the surface. This technque is called chemical Mechanical polishing (CMP). Then we perform Photolithography techniques follwed by  TiN and balnket Tungsten layer deposition and do CMP. Deposit AL layer and repeat photolithography and CMP. This is 1st level of interconnect. Add another layer of interconnects to take to higher level metal layers. Lastly, Layer a dielectric i.e., Si3N4 to protect the chip. 
+
+ ![Screenshot (34)](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/ae5675b9-5b61-4472-81c5-c0cb8f282529)
+ 
+## SKY130 basic layer layout and LEF using inverter
+
+- From Layout, we see the layers which are required for CMOS inverter. Inverter is, PMOS and NMOS connected together.
+- Gates of both PMOS and NMOS are connected together and fed to input(here ,A), NMOS source connected to ground(here, VGND), PMOS source is connected to VDD(here, VPWR), Drains of PMOS and NMOS are connected together and fed to output(here, Y). 
+The First layer in skywater130 is ``localinterconnect layer(locali)`` , above that metal 1 is purple color and metal 2 is pink color.
+If you want to see connections between two different parts, place the cursor over that area and press S three times. The tkson window gives the connectivity information.
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/fc51c2de-26f5-4ada-8c39-f5f29604999b)
+
+### Library exchange format (.lef)
+
+- The layout of a design is defined in a specific file called LEF.
+-  It includes design rules (tech LEF) and abstract information about the cells. 
+    - ```Tech LEF``` -  Technology LEF file contains information about the Metal layer, Via Definition and DRCs.
+    - ```Macro LEF``` -  Contains physical information of the cell such as its Size, Pin, their direction.
+ 
+## Designing standard cell and SPICE extraction in MAGIC 
+
+-  First we need to provide bounding box width and height in tkson window. lets say that width of BBOX is 1.38u and height is 2.72u. The command to give these values to magic is
+   ``` property Fixed BBOX (0 0 1.32 2.72)  ```
+- After this, Vdd, GND segments which are in metal 1 layer, their respective contacts and atlast logic gates layout is defined
+Inorder to know the logical functioning of the inverter, we extract the spice and then we do simulation on the spice. To extract it on spice we open TKCON window, the steps are
+- Know the present directory - ``pwd ``
+- create an extration file -  the command is  `` extract all `` and  ``sky130_inv.ext`` files has been created
+          
+- create spice file using .ext file to be used with our ngspice tool  - the commands are  
+      ``` ext2spice cthresh 0 rthresh 0 ``` - extracts parasatic capcitances also since these are actual layers - nothing is created in the folder
+      ``` ext2spice ``` - a file ```sky130_inv.spice``` has been created.
+      
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/80394fcd-2b43-49fb-b51b-af80304888a0)
+     
+# SKY130 Tech File Labs
+     
+## Create Final SPICE Deck 
+  
+let us see what is inside the spice Deck
+In the spice file subcircuit(subckt), pmos and nmos node connections are defined
+   
+For NMOS  ``` XO Y A VGND VGND sky130_fd_pr_nfet_01v8 ``` . The order is  ``` Cell_name Drain Gate Source Substrate model_name ``` .
+For PMOS  ``` X1 Y A VPWR VPWR sky130_fd_pr_pfet_01v8 ``` . The order is   ``` cell_name Drain Gate Source Substrate model_name ```.
+   
+For transient anaylsis, we would like to define these following connections and extra nodes for these in spice file
+  - VGND to VSS
+  - Supply voltage from VPWR to Ground - extra nodes here will be 0 and VDD with a value of 3.3v 
+  - sweep in/pulse between A pin and VGND (0)
+Before, editing the file, make sure scaling is proper, we measure the value of the gride size from the magic layout and define using `` .option scale=0.01u`` in the Deck file.
+  
+Now keeping the connection in mind, define the required commands in the file. Along with this we need to include libs for nmos ``nshort.lib`` and pmos ``pshort.lib`` and define transient analysis commands too. We comment the subckt since we are trying to input the controls and transient analysis also. Model names are changed to ``nshort_model.0`` and ``pshort_model.0`` according to the libs of nmos and pmos.
+  
+These voltage sources and simulation commands are defined in the Deck file.
+   ``
+   VDD VPWR 0 3.3V
+   VSS VGND 0 0V
+   Va A VGND PULSE(0V 3.3V 0 0.1ns 0.1ns 2ns 4ns)
+   .tran 1n 20n
+   .control
+   run
+   .endc
+   .end
+   ``
+  
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/f55eb2a7-0251-4fbd-9b40-24a8088f3bbb)
+
+## Using ngspice for spice simulation
+  
+Spice Deck is done and now to run spice simulation invoke ngspice in the tool and pass the source file. 
+ 
+  ``` ngspice sky130_inv.spice ```
+  
+On the prompt you can see the values the ngspice has taken. To see the plot, use
+   
+   ``` plot y vs time a ``` .
+   
+Now we have the transient response, the next objective is to characterise the cell.
+   
+    
+[image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/603a0396-bd48-4d2d-a74e-34815ab26f94)
+     
+## Standard cell characterization of CMOS Iinverter 
+ 
+characterization of the inverter standard cell depends on Four timing parameters
+ 
+ **Rise Transition**: Time taken for the output to rise from 20% to 80% of max value
+ **Fall Transition**: Time taken for the output to fall from 80% to 20% of max value
+ **Cell Rise delay**: difference in time(50% output rise) to time(50% input fall)
+ **Cell Fall delay**: difference in time(50% output fall) to time(50% input rise)
+ 
+ The above timing parameters can be computed by noting down various values from the ngspice waveform.
+ 
+ ``` Rise Transition : 2.25421 - 2.18636 = 0.006785 ns / 67.85ps ```
+ ``` Fall Transitio : 4.09605 - 4.05554 = 0.04051ns/40.51ps ```
+ ```Cell Rise Delay : 2.21701 - 2.14989 = 0.06689ns/66.89ps ```
+ ```Cell Fall Delay : 4.07816 - 4.05011 = 0.02805ns/28.05ps ```
+ 
+## LAB exercise and DRC Challenges
+
+## Intrdocution of Magic and Skywater DRC's
+
+  - In-depth overview of Magic's DRC engine
+  - Introduction to Google/Skywater DRC rules
+  - Lab : Warm-up exercise : Fixing a simple rule error
+  - Lab : Main exercie : Fixing or create a complex error
+ 
+Before doing the lab, Get the knowledge of how Magic performs DRc's and Syntax for DRC rules  from this URL: ``` http://opencircuitdesign.com/magic```.
+Nothing works if there is no Technology file. Fortunatley by Google/ Skywater, we have the opportunity to use the fabication process technology now made as an open source.
+
+skywater sky130 pdk URL : ``` https://skywater-pdk.readthedocs.io/en/main/ ```
+
+The two main sources of information PDK:
+  - github.com - ```https://github.com/google/skywater-pdk``` - understand the design rules 
+  - Documentation - ``` https://skywater-pdk--136.org.readthedox.build```
+  
+Since github is not used for tutorial and documentation is critical for lab since browser needs to be open for the lab.
+  
+## Sky130s pdk intro and Steps to download labs
+  
+  - setup to view the layouts
+  - For extracting and generating views, Google/skywater repo files were built with Magic
+  - Technology file dependency is more for any layout. hence, this file is created first.
+  - Since, Pdk is still under development, there are some unfinished tech files and these are packaged for magic along with lab exercise layout and bunch of stuff into the tar ball
+ 
+We can download the packaged files from web using ``wget `` command. wget stands for web get, a non-interactive file downloader command.
+  
+  ``` wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz```
+  
+The archive file drc_tests.tgz is downloaded into our user directory 
+  
+![wget](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/3358159c-b338-43f4-b811-58a11284e75b)
+
+Now, we need to unzip the archive file. For this we use tar utility command. 
+
+`` tar - tap archiver`` create and extract a tar archive file.
+
+The command to extract the tar file is 
+
+`` tar -xfz drc_tests.tgz``
+
+once extraction is done, drc_tests file is created and you will have all the information about magic layout for this lab exercise
+
+![tar](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/6c27f1d8-57ce-4796-bbc5-9345a4843920)
+
+Now run MAGIC
+
+For better graphics use command ``magic -d XR ``
+
+Now, lets see an example of simple failing set of rules of metal 3 layer.  you can either run this by magic command line `` magic -d XR metal3.mag `` or from the magic console window, `` menu - file - open -load file9here, metal3.mag) ``
+
+![ms](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/ac4b681b-b486-4db0-9eef-23f532d5b685)
+
+We have few drc errors and calls out a rule number. You can see these rules on google skywater pdk read the doc page.
+From metal 3.4 drc rules, Via2 must be enclosed by metal3 by atleast 0.065u. 
+Magic tablet is of using many derived layers and in which via is one. Via represents the area filled with contact cuts.
+Draw a large area of M3 contatc using mouse pointer hovering over the m3contact icon on the side toolbar. Now with cursor box around the m3 area, type command
+``` cif see VIA2 ``` . This create contatc cuts which are bloack sqaure shaped. 
+These dont exist on the drawn layout, but they represent as mask layer VIA2, that will end up in the GDS
+Futher details about these are metioned in cif output section in tech file.
+The view we see is feedback entry and can dismiss it with `` feed clear `` We use snap internal command `` snap int `` for the cursor to move along the edge of the grid.
+There are few spacing rukes metioned like spacing between Via2 and metal 3 is 0.065u. 
+If we put the curosor between the contact cut and drawn via edge and click box in tkcon command, we will get the distance.
+The tool automatically places and do spacing of the contact, there wont be any DRC errors and the distance will not be smaller than the specified one.
+
+![area via2](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/25b99b94-8382-4ca4-b214-1c844ae8dfe8)
+
+## Load Sky130 tech rules for drc challenges 
+
+First load the poly file by ``load poly.mag`` on tkcon window.
+
+Finding the error by mouse cursor and find the box area, Poly.9 is violated due to spacing between polyres and poly.
+
+![poly spacing](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/afbfc91e-65b5-4efc-ab28-98eade6b454c)
+
+View the tech file and search whether we have created any drc rule for poly.9. If there is none, create a rule defining spacing between polyres and poly.
+This is how we add spacing for all the polyres
+
+![earlier for diff tap](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/74529987-6524-4ecd-9cdf-1598f7d7adb1)
+
+Once the tech file has been modified for drc, we load the tech file in tkcon window and tool doesnot check drc automatically so we need to check drc too. Once loaded, the violations are reduced since spacing rule is met.
+`` tech load sky130A.tech `` followed by `` drc check ``
+
+![fizing spacing btwn polyres to poluy](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/b922a896-4f06-444e-af78-319326956082)
+
+Now, poly.9 is spacing between polyres to poly and poly to diff/tap. Once we resolve the polyres to poly, poly to tap / diff got violated. So we provide spacing for tap/diff. in tech, 
+
+![spacing for all diff](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/6fbf7226-9111-4b57-80f9-d1a27f6ed06e)
+
+Again load the tech file, check drc and the issue will be solved.
+
+# DAY 4 Pre-layout Timing analysis and CTS
+
+## Timing Analysis and Clock Tree Synthesis (CTS)
+
+## Standard Cell LEF generation
+
+During Placement, entire mag information is not necessary. Only the PR boundary, I/O ports, Power and ground rails of the cell is required. This information is defined in LEF file.
+The main objective is to extract lef from the mag file and plug into our design flow.
+
+## Grid into Track info
+
+ **Track** :A path or a line on which metal layers are drawn for routing. Track is used to define the height of the standard cell. 
+
+To implement our own stdcell, few guidelines must be followed 
+ - I/O ports must lie on the intersection on Horizontal and vertical tracks
+ - Width and Height of standard cell are odd mutliples of Horizontal track pitch and Vertical track pitch
+
+This information is defined in ``tracks.info``. The syntax is ``` metal_layer direction offset spacing ```
+
+```
+li1 X 0.23 0.46 
+li1 Y 0.17 0.34
+```
+  
+![4-1](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/0b1a5578-e3a4-41b4-b8c5-6ce8c4414228)
+
+lets say the I/O ports are in ```li1 layer``` and check whether they are at intersection or not by using ```grid 0.46um 0.34um 0.23um 0.17um``` on tkcon window and to activate the grid, press G on the magic console.
+ 
+Now, check whether the width and height of std cell met by measuring the tracks the cells has occupied.
+ 
+![frustated](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/319aa4c7-6e1e-4273-b9cd-ba10adfc4c73)
+
+
+## Create Port Definition: 
+
+However, certain properties and definitions need to be set to the pins of the cell. For LEF files, a cell that contains ports is written as a macro cell, and the ports are the declared as PINs of the macro.
+
+The way to define a port is through Magic console and following are the steps:
+- In Magic Layout window, first source the .mag file for the design (here inverter). Then Edit >> Text which opens up a dialogue box.
+- When you double press S at the I/O lables, the text automatically takes the string name and size. Ensure the Port enable checkbox is checked and default checkbox is unchecked as shown in the figure:
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/8aee236b-632c-41ae-8465-db34b3783501)
+
+- In the above figure, The number in the textarea near enable checkbox defines the order in which the ports will be written in LEF file (0 being the first).
+
+-  For power and ground layers, the definition could be same or different than the signal layer. Here, ground and power connectivity are taken from metal1 (Check by using
+what command on tkcon once you make box on VPWR and VGND on magic window)
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/e14054c8-114e-46b2-a14d-7a6ed17763c5)
+
+## Set port class and port use attributes for layout 
+
+After defining ports, the next step is setting port class and port use attributes.
+
+Select port A in magic:
+```
+port class input
+port use signal
+```
+Select Y area
+```
+port class output
+port class signal
+```
+Select VPWR area
+```
+port class inout
+port use power
+```
+Select VGND area
+```
+port class inout
+port use ground
+
+```
+
+## Custom cell naming and lef extraction.
+
+Name the custom cell through tkcon window as ```sky130_vsdinv.mag```.
+
+![4-8 our cell](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/68fc0578-dd29-45c5-a6ee-d64cbc02a60b)
+
+this gets created in ```openlane/vsdstdcelldesign``` directory.
+
+![4-7 custon name for cell](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/7c2aebaf-5e2a-4e26-800f-b2e04d340e3f)
+
+
+LEF extraction can be carried out in tkcon as follows:
+```
+lef write
+
+```
+![lef write](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/9cc3b2a1-c0c1-4190-a220-fcfd13ad6723)
+
+This generates ```sky130_vsdinv.lef``` file.
+
+![4-9 lef file created](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/fabbb30e-fb9f-4a9a-bb98-c7de461cac54)
+
+## Integrating custom cell in OpenLANE
+
+In order to include our custom standard cell to ur design and run the first step synthesis, copy the``` sky130_vsdinv.lef``` file to the ``designs/picorv32a/src directory.``
+Since abc maps the standard cell to a library, there must be a library that defines the CMOS inverter. The ```sky130_fd_sc_hd_typical.lib``` as well as fast and slow libs files from ```vsdstdcelldesign/libs``` directory needs to be copied to the ```designs/picorv32a/src``` directory. If you are interested to check our cell in lib and lef, go to lib and lef folders
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/77f8b542-d996-4060-956f-c02283e2f5b0)
+
+
+![4-10 lef and lib file to picrov32a](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/685c25b1-c3f1-43f2-b7e0-1985cd341531)
+
+
+Next, modifiy the ``config.tcl`` by adding few extra definitions like abc synthesis mapping to typical.lib, other three are used for sta analysis and to include extra lefs(our design lef) to flow
+
+```
+set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__typical.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__slow.lib"
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__typical.lib"
+set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]
+```
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/d6414049-bbc3-4c80-b516-7b616afa973d)
+
+Before this, lets change the env variable strategy for synth in `` configuration/synthesis.tcl ``  from `` AREA 0 to DELAY ``
+
+
+In order to integrate the standard cell in the OpenLANE flow, invoke openLANE as usual and carry out following steps:
+``` 
+prep -design picorv32a -tag 03-06-08-35 -overwrite 
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+run_synthesis
+```
+After synthesis, my timing is clean.
+
+## Delay Tables
+
+Basically, Delay is a parameter that has huge impact on our cells in the design. Delay decides each and every other factor in timing. 
+For a cell with different size, threshold voltages, delay model table is created where we can it as timing table.
+```Delay of a cell depends on input transition and out load```. 
+Lets say two scenarios, 
+we have long wire and the cell(X1) is sitting at the end of the wire : the delay of this cell will be different because of the bad transition that caused due to the resistance and capcitances on the long wire.
+we have the same cell sitting at the end of the short wire: the delay of this will be different since the tarn is not that bad comapred to the earlier scenario.
+Eventhough both are same cells, depending upon the input tran, the delay got chaned. Same goes with o/p load also.
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/d6a9ee55-39c4-46b1-a8c8-f4695758621e)
+
+
+Just for better values for slack, I checked few synthesis environment variables like synthesis strategy, synthesis buffering and synthesis sizing , maximum fanout of cells and made changes if neccessary.
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/0296f08a-fdab-4c22-9ec4-d4b04ee78d2c)
+
+run synthesis if you have violations for better slack
+
+Next floorplan is run, followed by placement:
+```
+run_floorplan
+
+```
+SInce we are getting an error shown in the below, 
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/9cd41112-43d3-46e7-98f3-5008a7afe8ab)
+
+we gave commands for each stage manually step by step after synthesis.  
+```
+init_floorplan
+place_io
+global_placement_or
+tap_decap_or
+```
+   
+During floorplan, ``` tap cells - 7892, Endcap cells - 550 ``` got placed. Design has ``` 275 original rows ```.
+
+Now Instead of run_placement, we get 
+``
+   detailed_placement
+``
+
+After placement, we check for legality. I even check how many cells got placed.
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/91b062d3-946c-4893-af99-ff826db25b45)
+
+To check the layout invoke magic from the ```results/placement``` directory:
+
+```
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.def &
+```
+
+Since the custom standard cell has been plugged into the design,in the openlane flow, it would be visible in the layout.
+
+![cell in our design](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/f36a0c82-cd99-4850-b1ec-3a4e9114b747)
+
+## Post-synthesis timing analysis Using OpenSTA
+
+Timing analysis is carried out outside the openLANE flow using OpenSTA tool. For this, ```pre_sta.conf``` is required to carry out the STA analysis. Invoke OpenSTA outside the openLANE flow as follows:
+```
+sta pre_sta.conf
+```
+![sta config](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/9beaddcf-52d3-4a60-bc58-09cc714734c1)
+
+sdc file for OpenSTA is modified like this:
+
+base.sdc is located in vsdstdcelldesigns/extras directory.
+So, I copied it into our design folder using
+
+``` cp my_base.sdc /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/ ```
+
+![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/e2e1e152-d5b5-41ad-9670-ae8a88d04d28)
+
+Since I have no Violations I skipped this, but have hands on experience on timing analysis using OpenSTA.
+
+Since clock is propagated only once we do CTS, In placement stage, clock is considered to be ideal. So only setup slack is taken into consideration before CTS.
+
+``` 
+Setup time: minimum time required for the data to be stable before the active edge of the clock to get properly captured.
+
+Setup slack : data required time - data arrival time 
+
+```
+
+clock is generated from PLL which has inbuilt circuit which cells and some logic. There might variations in the clock generation depending upon the ckt. These variations are collectivity known as clock uncertainity. In that jitter is one of the parameter. It is uncertain that clock might come at that exact time withought any deviation. That is why it is called clock_uncertainity
+Skew, Jitter and Margin comes into clock_uncertainity
+
+```  Clock Jitter : deviation of clock edge from its original position. ```
+
+From the timing report, we can improve slack by upsizing the cells i.e., by replacing the cells with high drive strength and we can see significant changes in the slack.
+
+##  Clock Tree Synthesis using Tritoncts
+
+In this stage clock is propagated and make sure that clock reaches each and every clock pin from clock source with mininimum skew and insertion delay. Inorder to do this, we implement H-tree using mid point strategy. For balancing the skews, we use clock invteres or bufferes in the clock path. 
+Before attempting to run CTS in TritonCTS tool, if the slack was attempted to be reduced in previous run, the netlist may have gotten modified by cell replacement techniques. Therefore, the verilog file needs to be modified using the ```write_verilog``` command. Then, the synthesis, floorplan and placement is run again. To run CTS use the below command:
+```
+run_cts
+```
+
+After CTS run, my slack values are
+
+``setup : 4.33 , Hold : 0.25``
+
+Since, clock is propagated, from this stage, we do timing analysis with real clocks. From now post cts analysis is performed by operoad within the openlane flow
+
+```
+openroad
+write_db pico_cts.db
+read_db pico_cts.db
+read_verilog /openLANE_flow/designs/picorv32a/runs/03-07_11-25/results/synthesis/picorv32a.synthesis_cts.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock (all_clocks)
+report_checks -path_delay min_max -format full_clock_expanded -digits 4
+``` 
+
+After performing Timing analysis, my slack values are
+
+``` Setup : 4.0565 , Hold : -0.1673```.
+
+![buff with more delay](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/396e9062-6818-4740-bbfa-b36efcc158c6)
+
+After CTS, my hold slack is getting violated. In order to fix that, I checked the cell that has more delay from the report from the above picture and changed it to the cell that has more drive strength.
+we exit from openROAD and give these commands
+
+![buff list change](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/a91c21d5-f800-448d-8be9-39f5d0bb050b)
+
+```
+echo $::env(CTS_CLK_BUFFER_LIST)
+set $::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
+echo $::env(CTS_CLK_BUFFER_LIST)
+```
+After changing the files, load the placement stage def file and run cts again. 
+Now, again run OpenROAD and create another db and everything else is same.
+Report after post_cts is
+
+``` Setup slack - 4.2379 , Hold slack - 0.1169 ```
+
+# Final steps in RTL2GDS
+
+## Power Distribution Network generation
+
+Unlike the general ASIC flow, Power Distribution Network generation is not a part of floorplan run in OpenLANE. PDN must be generated after CTS and post-CTS STA analyses:
+
+```
+gen_pdn
+```
+we can check whether PDN has been created or no by check the current def environment variable: ``` echo S::env(CURRENT_DEF)```.
+  - Once the command is given, power distribution netwrok is generated.
+  - The power distribution network has to take the `design_cts.def` as the input def file.
+  - Power rings,strapes and rails are created by PDN.
+  - From VDD and VSS pads, power is drawn to power rings.
+  - Next, the horizontal and vertical strapes connected to rings draw the power from strapes. 
+  - Stapes are connected to rings and these rings are connected to std cells. So, standard cells get power from rails.
+  -  The standard cells are designed such that it's height is multiples of the vertical tracks /track pitch. Here, the pitch is `2.72`. Only if the above conditions are adhered it is possible to power the standard cells.
+  -  There are definitions for the straps and the rails. In this design, straps are at metal layer 4 and 5 and the standard cell rails are at the metal layer 1. Vias connect accross the layers as required.
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/5d1cf948-7ba7-4f17-a8e8-5ceebf0a13d1)
+
+## Routing
+
+The two types of engines that perform two types of routing are
+ - Global routing - routing is divided into grids and 3D routing graph used during this by ``FASTE ROUTE``. 
+ - Detailed routing - Finer grids and routing guides used to implement physical wiring ``tritonRoute`` 
+- Fast Route generates the routing guides, whereas Triton Route uses the Global Route and then completes the routing with some strategies and optimisations for finding the best possible path connect the pins. 
+
+## Features of TritonRoute
+
+- Performs Initial detail route
+- Honouring pre-processed route guides
+   - Initial route guide
+   - splitting
+   - merging
+   - bridging
+- Assumes route guide for each net satisfy inter guide connectivity
+- Works on MILP based panel routing scheme with Intra-layer parallel and inter-layer sequential routing framework
+
+This routing stage must have the ``CURRENT_DEF`` set to ``pdn.def``
+
+Start routing by using 
+
+``run_routing``
+
+- The options for routing can be set in the `config.tcl` file. 
+- The optimisations in routing can also be done by specifying the routing strategy to use different version of `TritonRoute Engine`. There is a trade0ff between the optimised route and the runtime for routing.
+- For the default setting picorv32a takes approximately 30 minutes according to the current version of TritonRoute.
+
+![drc clean](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/c418c0c3-bea0-401c-92e6-d46eeb3041bf)
+
+To see the final layout with PDN and routing use magic engine.
+
+``` magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.routing.def & ```
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/6feefd73-f6fa-4911-9ab4-4df4e5d75fb7).
+
+Our ``sky130_vsdinv`` after routing looks like
+
+![routed design of our cell](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/66541017-8bd4-4492-82ee-c8b2b20ffd2d)
+
+
+## SPEF Extraction
+
+Parasitic extraction is done separately using spef extractor oustide the openlane.
+Invoke the engine using the command in SPEF_EXTRACTOR directory:
+
+``python3 main.py /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/03-06_15-23/tmp/merged.lef /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/03-06_15-23/results/routing/picorv32a.def/``
+
+One thing is observed is TritonRoute automatically generates spef file once it finishes its run. If we create a spef manually, this will replace the auto generated spef file.
+
+
+
+
+
+
+
+
+
+
 
 
 
