@@ -68,9 +68,12 @@
 - Clock Tree Synthesis using Tritoncts
 
 ### DAY 5 Final steps in RTL2GDS
+- Maze Routing and Lee's algorithm
+- Design Rule Check (DRC)
 - Power Distribution Netwrok generation
-- ROUTING
+- Routing
 - Features of Tritonroute
+- TritonRoute problem statement
 - SPEF extraction
 
 # DAY 1 Inception of open-source EDA, OpenLANE and SKY130PDK
@@ -1024,7 +1027,7 @@ Next floorplan is run, followed by placement:
 run_floorplan
 
 ```
-SInce we are getting an error shown in the below, 
+Since we are getting an error shown in the below, 
 
 ![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/9cd41112-43d3-46e7-98f3-5008a7afe8ab)
 
@@ -1190,6 +1193,7 @@ we can check whether PDN has been created or no by check the current def environ
 ![pdn](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/8f3bc2b5-6655-470a-a43d-7e5378a55e61)
 
 ## Routing
+
 Basically in any of the routing EDA tools both OpenLANE and Commerical EDA tools, the entire routing process is very complex because of huge space. They divided the routing into two stages, Global routing and detailed routing.
 
 The two types of engines that perform two stages of routing are
@@ -1220,7 +1224,7 @@ Fast Route generates the routing guides, whereas Triton Route uses the Global Ro
  
 ![inter and intra](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/e21dc4df-d2f4-4939-b711-6b9750e46174)
 
-## TritonRoute
+## TritonRoute problem statement
 
 ``` 
 Inputs : LEF, DEF, Preprocessed route guides
