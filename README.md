@@ -854,6 +854,8 @@ Finding the error by mouse cursor and find the box area, Poly.9 is violated due 
 
 ![poly spacing](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/afbfc91e-65b5-4efc-ab28-98eade6b454c)
 
+![polyres to poly](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/4adfd293-2ff0-408e-a657-1e56bffeccbf)
+
 View the tech file and search whether we have created any drc rule for poly.9. If there is none, create a rule defining spacing between polyres and poly.
 This is how we add spacing for all the polyres
 
@@ -868,11 +870,13 @@ Now, poly.9 is spacing between polyres to poly and poly to diff/tap. Once we res
 
 ![spacing for all diff](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/6fbf7226-9111-4b57-80f9-d1a27f6ed06e)
 
+![poly to diff](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/b6ec1559-9d32-464b-8d02-a3593a2033df)
+
 Again load the tech file, check drc and the issue will be solved.
 
 # DAY 4 Pre-layout Timing analysis and CTS
 
-## Timing Analysis and Clock Tree Synthesis (CTS)
+# Timing Analysis and Clock Tree Synthesis (CTS)
 
 ## Standard Cell LEF generation
 
@@ -1060,7 +1064,7 @@ Since the custom standard cell has been plugged into the design,in the openlane 
 
 ![cell in our design](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/f36a0c82-cd99-4850-b1ec-3a4e9114b747)
 
-## Post-synthesis timing analysis Using OpenSTA
+# Post-synthesis timing analysis Using OpenSTA
 
 Timing analysis is carried out outside the openLANE flow using OpenSTA tool. For this, ```pre_sta.conf``` is required to carry out the STA analysis. Invoke OpenSTA outside the openLANE flow as follows:
 ```
@@ -1095,7 +1099,7 @@ Skew, Jitter and Margin comes into clock_uncertainity
 
 From the timing report, we can improve slack by upsizing the cells i.e., by replacing the cells with high drive strength and we can see significant changes in the slack.
 
-##  Clock Tree Synthesis using Tritoncts
+#  Clock Tree Synthesis using Tritoncts
 
 In this stage clock is propagated and make sure that clock reaches each and every clock pin from clock source with mininimum skew and insertion delay. Inorder to do this, we implement H-tree using mid point strategy. For balancing the skews, we use clock invteres or bufferes in the clock path. 
 Before attempting to run CTS in TritonCTS tool, if the slack was attempted to be reduced in previous run, the netlist may have gotten modified by cell replacement techniques. Therefore, the verilog file needs to be modified using the ```write_verilog``` command. Then, the synthesis, floorplan and placement is run again. To run CTS use the below command:
@@ -1258,6 +1262,12 @@ To see the final layout with PDN and routing use magic engine.
 
 ![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/6feefd73-f6fa-4911-9ab4-4df4e5d75fb7).
 
+Our custimizes cell in the final layout i.e., after routing
+
+![routed design of our cell](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/d3b48ba1-2961-41d0-9b3f-61f7f242ab2d)
+
+![routed design of our cell](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/7630fb16-423a-4450-99b2-45d24b168aaf)
+
 ## SPEF Extraction
 
 Parasitic extraction is done separately using spef extractor oustide the openlane.
@@ -1268,44 +1278,3 @@ Invoke the engine using the command in SPEF_EXTRACTOR directory
 One thing is observed is TritonRoute automatically generates spef file once it finishes its run. If we create a spef manually, this will replace the auto generated spef file.
 
 Drc clean, Timing clean. My design RTL2GDS is successful.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
