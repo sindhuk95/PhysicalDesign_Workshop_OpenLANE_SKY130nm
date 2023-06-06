@@ -76,6 +76,10 @@ This workshop "Advanced Physical Design using OpenLANE/Sky130" is condcuted by V
 - TritonRoute problem statement
 - SPEF extraction
 
+###Summary
+- OpenLANE Interactive Flow
+- OpenLANE non-interactive flow
+
 # DAY 1 Inception of open-source EDA, OpenLANE and SKY130PDK
 
 List of Topics being covered
@@ -759,7 +763,7 @@ On the prompt you can see the values the ngspice has taken. To see the plot, use
 Now we have the transient response, the next objective is to characterise the cell.
    
     
-[image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/603a0396-bd48-4d2d-a74e-34815ab26f94)
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/603a0396-bd48-4d2d-a74e-34815ab26f94)
      
 ## Standard cell characterization of CMOS Iinverter 
  
