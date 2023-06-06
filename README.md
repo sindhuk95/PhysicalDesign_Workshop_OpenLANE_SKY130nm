@@ -31,7 +31,9 @@
 - Cell design and characterization
    - Standard Cell characterization flow
 - Timing Characterization
-- 
+  - Timing Threshold definition
+  - Propagation Delay and Transition Time
+  
 ### DAY 3 Design Library Cell using ngspice simulations
 - CMOS inverter ngspice simulations
    - IO placer revision
@@ -49,6 +51,7 @@
       - Intrdocution of Magic and Skywater DRC's
       - Sky130s pdk intro and Steps to download labs
       - Load Sky130tech rules for drc challenges
+     
 ### DAY 4 Pre-layout Timing analysis and CTS
 - Timing Analysis and Clock Tree Synthesis (CTS)
    - Standard cell LEF generation
@@ -60,6 +63,7 @@
    - Delay tables
 - Post-synthesis timing analysis Using OpenSTA
 - Clock Tree Synthesis using Tritoncts
+
 ### DAY 5 Final steps in RTL2GDS
 - Power Distribution Netwrok generation
 - ROUTING
@@ -405,7 +409,7 @@ so flop ratio = 0.08943 or 8.943%
 
 # DAY 2 Floorplan and Introcution to Library Cells
 
-## Floorplanning considerations
+# Floorplanning considerations
 
    Few considerations are made before running floorplan. Key parameters are Aspect ratio, Utilization factors, Macro placement using  ```Macro Guide lines```, I/O pin  and Pre-placed cell placement and generating power grid. But In this OpenLANE flow, Power Grid generation comes after post-cts.So, lets take about power grid feneration after post-cts.
 
@@ -437,7 +441,7 @@ The netlist is the logical connectivity between cells. The area between the core
 
 ## Floorplan run on OpenLANE & review layout in Magic
 
-### Floorplan envrionment variables or switches:
+**Floorplan envrionment variables or switches:**
 1. ```FP_CORE_UTIL``` - core utilization percentage
 2. ```FP_ASPECT_RATIO``` - the cores aspect ratio
 3. ```FP_CORE_MARGIN``` - The length of the margin surrounding the core area
@@ -447,7 +451,7 @@ The netlist is the logical connectivity between cells. The area between the core
  
 ***Note: Usually, the parameter values for vertical metal layer and horizontal metal layer will be 1 more than that specified in the files***
 
-### Importance files in increasing priority order:
+**Importance files in increasing priority order:**
 1. ```floorplan.tcl``` - System default settings
 2. ```conifg.tcl```
 3. ```sky130A_sky130_fd_sc_hd_config.tcl```
@@ -487,7 +491,7 @@ You can clearly see I/O pins, Decap cells and Tap cells. Tap cells are placed in
 ![image](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/3a55d83e-1776-4b96-a55c-f1cf00d823bb)
 
 
-## Library Binding and Placement
+# Library Binding and Placement
 
 ## Netlist Binding and initial place design
 
@@ -521,7 +525,7 @@ magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs
 
 As we know, From logic synthesis to routing and STA, each and evry stage has one thing in common i.e., logic gates/ logic cells. In order for the tool understand these gates are and their timing, we need to characterize these cells. 
 
-## CELL DESIGN AND CHARACETRIZATION FLOWS
+# CELL DESIGN AND CHARACETRIZATION FLOWS
 
 Library is a place where we get information about every cell. It has differents cells with different size, functionality,threshold voltages. There is a typical cell design flow steps.
 1. Inputs : PDKS(process design kit) : DRC & LVS, SPICE Models, library & user-defined specs.
@@ -546,7 +550,9 @@ These .libs are classified as Timing characterization, power characterization an
 
 ![image](https://github.com/sindhuk95/later/assets/135046169/87348350-fa25-4ef8-99f4-1cdddf070f10)
 
-## TIMING CHARACTERIZATION
+# TIMING CHARACTERIZATION
+
+In standard cell characterisation, One of the classification of libs is timing characterisation.
 
 ## Timing threshold definitions 
 Timing defintion |	Value
@@ -562,13 +568,13 @@ out_fall_thr | 50% value
 
 ## Propagation Delay and Transition Time 
 
-Propagation Delay :  the time difference between when the transitional input reaches 50% of its final value and when the output reaches 50% of its final value. Poor choice of threshold values lead to negative delay values. Even thought you have taken good threshold values, sometimes depending upon how good or bad the slew, the dealy might be still +ve or -ve.
+**Propagation Delay** 
+The time difference between when the transitional input reaches 50% of its final value and when the output reaches 50% of its final value. Poor choice of threshold values lead to negative delay values. Even thought you have taken good threshold values, sometimes depending upon how good or bad the slew, the dealy might be still +ve or -ve.
 
 ```
 Propagation delay = time(out_thr) - time(in_thr)
 ```
-
-## Transition time or Slew 
+**Transition Time**
 
 The time it takes the signal to move between states is the transition time , where the time is measured between 10% and 90% or 20% to 80% of the signal levels.
 
