@@ -1,4 +1,6 @@
-# openLANE_sky130_PD_workshop_
+# OpenLANE_sky130_PD_workshop
+
+
 
 ## Table of contents
 ### DAY 1  Inception of open-source EDA, OpenLANE and SKY130PDK
