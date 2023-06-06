@@ -48,6 +48,7 @@
    - Designing standard cell and SPICE extraction in MAGIC
 - SKY130 Tech File Labs
    - Create Final SPICE Deck
+   - Using ngspice for simulation
    - Standard cell characterisation CMOS Inverter
    - LAB exercise and DRC Challenges
       - Intrdocution of Magic and Skywater DRC's
