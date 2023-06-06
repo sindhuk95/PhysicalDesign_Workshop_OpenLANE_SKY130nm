@@ -1269,4 +1269,42 @@ Invoke the engine using the command in SPEF_EXTRACTOR directory
 
 One thing is observed is TritonRoute automatically generates spef file once it finishes its run. If we create a spef manually, this will replace the auto generated spef file.
 
-Drc clean, Timing clean. My design RTL2GDS is successful.
+# Summary
+
+## OpenLANE Interactive Flow
+
+```
+cd Desktop/work/tools/openlane_working_dir/OpenLane/ 
+
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+run_synthesis
+run_floorplan
+ * init_floorplan
+ * place_io
+ * global_placement_io
+ * tap_decap_or 
+detailed_placement
+run_cts
+run_routing
+run_magic
+run_magic_spice_export
+run_magic_drc
+run_netgen
+run_magic_antenna_check
+```
+
+## OpenLANE non-interactive flow
+
+``` 
+cd Desktop/work/tools/openlane_working_dir/OpenLane/ 
+docker
+./flow.tcl -design picorv32a
+```
+## Acknowledgements 
+
+- [Nickson Jose](https://github.com/nickson-jose/vsdstdcelldesign)
+- [Kunal Ghosh](https://github.com/kunalg123)
+- [The OpenROAD Project](https://github.com/The-OpenROAD-Project/OpenLane)
+
