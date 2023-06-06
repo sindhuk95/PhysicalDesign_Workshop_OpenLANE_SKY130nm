@@ -1,4 +1,4 @@
-# OpenLANE_sky130_PD_workshop
+# OpenLANE_SKY130_PD_workshop
  
 This workshop "Advanced Physical Design using OpenLANE/Sky130" is condcuted by VLSI System Design Corporation . In this we generated GDSII from the RTL netlist for PicoRV32a SoC design with Openlane flow using "Google-Skywater's Opensource 130nm Process Design Kit(PDK)". Using sky130 PDK variant, we designed and characterised our own standard cells. OpenLANE runs complete RTL2GDSII flow automatically. Timing Analysis is performed and optimization is carried out for better timing. Design rules checks are performed too.
  
