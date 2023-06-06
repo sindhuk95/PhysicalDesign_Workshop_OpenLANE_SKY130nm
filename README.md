@@ -852,8 +852,6 @@ First load the poly file by ``load poly.mag`` on tkcon window.
 
 Finding the error by mouse cursor and find the box area, Poly.9 is violated due to spacing between polyres and poly.
 
-![poly spacing](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/afbfc91e-65b5-4efc-ab28-98eade6b454c)
-
 ![polyres to poly](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/4adfd293-2ff0-408e-a657-1e56bffeccbf)
 
 View the tech file and search whether we have created any drc rule for poly.9. If there is none, create a rule defining spacing between polyres and poly.
@@ -864,13 +862,9 @@ This is how we add spacing for all the polyres
 Once the tech file has been modified for drc, we load the tech file in tkcon window and tool doesnot check drc automatically so we need to check drc too. Once loaded, the violations are reduced since spacing rule is met.
 `` tech load sky130A.tech `` followed by `` drc check ``
 
-![fizing spacing btwn polyres to poluy](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/b922a896-4f06-444e-af78-319326956082)
-
-Now, poly.9 is spacing between polyres to poly and poly to diff/tap. Once we resolve the polyres to poly, poly to tap / diff got violated. So we provide spacing for tap/diff. in tech, 
-
-![spacing for all diff](https://github.com/sindhuk95/SKY130_PD_WS_DAY3/assets/135046169/6fbf7226-9111-4b57-80f9-d1a27f6ed06e)
-
 ![poly to diff](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/b6ec1559-9d32-464b-8d02-a3593a2033df)
+
+Now, poly.9 is spacing between polyres to poly and poly to diff/tap. Once we resolve the polyres to poly, poly to tap / diff got violations by providing spacing for tap/diff. in tech, 
 
 Again load the tech file, check drc and the issue will be solved.
 
@@ -1263,8 +1257,6 @@ To see the final layout with PDN and routing use magic engine.
 ![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/6feefd73-f6fa-4911-9ab4-4df4e5d75fb7).
 
 Our custimizes cell in the final layout i.e., after routing
-
-![routed design of our cell](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/d3b48ba1-2961-41d0-9b3f-61f7f242ab2d)
 
 ![routed design of our cell](https://github.com/sindhuk95/openLANE_sky130_PD_workshop_day1/assets/135046169/7630fb16-423a-4450-99b2-45d24b168aaf)
 
