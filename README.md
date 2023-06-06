@@ -76,7 +76,7 @@ This workshop "Advanced Physical Design using OpenLANE/Sky130" is condcuted by V
 - TritonRoute problem statement
 - SPEF extraction
 
-###Summary
+OpenLANE Flows
 - OpenLANE Interactive Flow
 - OpenLANE non-interactive flow
 
@@ -1254,11 +1254,7 @@ Start routing by using
  
 ![drc clean](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/c418c0c3-bea0-401c-92e6-d46eeb3041bf)
 
-To see the final layout with PDN and routing use magic engine.
-
 ``` magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.routing.def & ```
-
-![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/6feefd73-f6fa-4911-9ab4-4df4e5d75fb7).
 
 Our custimizes cell in the final layout i.e., after routing
 
@@ -1272,8 +1268,11 @@ Invoke the engine using the command in SPEF_EXTRACTOR directory
 ``python3 main.py /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/03-06_15-23/tmp/merged.lef /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/03-06_15-23/results/routing/picorv32a.def/`` 
 
 One thing is observed is TritonRoute automatically generates spef file once it finishes its run. If we create a spef manually, this will replace the auto generated spef file.
+My DRC is clean and my RTLtoGDS was successful without any timing and drcs violations.
 
-# Summary
+Final GDSII layout 
+
+![image](https://github.com/sindhuk95/SKY130_PD_WS_DAY4/assets/135046169/6feefd73-f6fa-4911-9ab4-4df4e5d75fb7).
 
 ## OpenLANE Interactive Flow
 
